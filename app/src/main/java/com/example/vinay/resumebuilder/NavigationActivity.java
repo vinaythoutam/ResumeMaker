@@ -205,6 +205,27 @@ public class NavigationActivity extends AppCompatActivity
                     rootView = inflater.inflate(R.layout.fragment_tab_three, container, false);
                     break;
                 }
+                case 4: {
+                    rootView = inflater.inflate(R.layout.fragment_tab_one, container, false);
+                    break;
+                }
+                case 5: {
+                    rootView = inflater.inflate(R.layout.fragment_tab_two, container, false);
+                    break;
+                }
+
+                case 6: {
+                    rootView = inflater.inflate(R.layout.fragment_tab_three, container, false);
+                    break;
+                }
+                case 7: {
+                    rootView = inflater.inflate(R.layout.fragment_tab_three, container, false);
+                    break;
+                }
+                case 8: {
+                    rootView = inflater.inflate(R.layout.fragment_tab_three, container, false);
+                    break;
+                }
 
             }
             return rootView;
@@ -231,18 +252,28 @@ public class NavigationActivity extends AppCompatActivity
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 8;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "PersonalInfo";
                 case 1:
-                    return "SECTION 2";
+                    return "CareerObjective";
                 case 2:
-                    return "SECTION 3";
+                    return "AcademicInfo";
+                case 3:
+                    return "Experience";
+                case 4:
+                    return "Skils";
+                case 5:
+                    return "Strengths&Hobbies";
+                case 6:
+                    return "Acheivements";
+                case 7:
+                    return "Declaration";
             }
             return null;
         }
