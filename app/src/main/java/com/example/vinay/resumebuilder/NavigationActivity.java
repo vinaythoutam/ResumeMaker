@@ -28,7 +28,6 @@ public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-
     ImageView pic;
     TextView guestName;
 
