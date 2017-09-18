@@ -21,11 +21,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+
+    ImageView pic;
     TextView guestName;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -36,6 +40,14 @@ public class NavigationActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+
+        pic=(ImageView)findViewById(R.id.pictureIV);
+        pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         //TabActiviy Code
 
@@ -193,37 +205,37 @@ public class NavigationActivity extends AppCompatActivity
             switch (getArguments().getInt(ARG_SECTION_NUMBER))
             {
                 case 1: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_one, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_tab_personal_info, container, false);
                     break;
                 }
                 case 2: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_two, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_tab_academic_info, container, false);
                     break;
                 }
 
                 case 3: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_three, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_tab_career_objective, container, false);
                     break;
                 }
                 case 4: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_one, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_tab_experience, container, false);
                     break;
                 }
                 case 5: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_two, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_tab_skills, container, false);
                     break;
                 }
 
                 case 6: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_three, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_tab_strength_hobbies, container, false);
                     break;
                 }
                 case 7: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_three, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_tab_acheivements, container, false);
                     break;
                 }
                 case 8: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_three, container, false);
+                    rootView = inflater.inflate(R.layout.fragment_tab_declaration, container, false);
                     break;
                 }
 
@@ -267,7 +279,7 @@ public class NavigationActivity extends AppCompatActivity
                 case 3:
                     return "Experience";
                 case 4:
-                    return "Skils";
+                    return "Skills";
                 case 5:
                     return "Strengths&Hobbies";
                 case 6:
