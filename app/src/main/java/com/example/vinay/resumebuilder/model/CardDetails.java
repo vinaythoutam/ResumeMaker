@@ -1,4 +1,6 @@
-package com.example.vinay.resumebuilder;
+package com.example.vinay.resumebuilder.model;
+
+import android.media.Image;
 
 /**
  * Created by ammu on 12/18/2016.
@@ -6,7 +8,9 @@ package com.example.vinay.resumebuilder;
 public class CardDetails {
 
     String cname,cdate,ctype;
+
     int cid;
+    Image image;
 
     public void setCname(String cname) {
         this.cname = cname;

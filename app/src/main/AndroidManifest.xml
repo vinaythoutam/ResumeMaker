@@ -3,6 +3,10 @@
     package="com.example.vinay.resumebuilder">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--<uses-permission android:name="android.permission.CAMERA"> </uses-permission>-->
+
+    <uses-feature android:name="android.hardware.camera"></uses-feature>
+
 
     <application
         android:allowBackup="true"

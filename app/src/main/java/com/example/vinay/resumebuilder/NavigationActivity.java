@@ -21,18 +21,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.vinay.resumebuilder.fragments.TabsPagerAdapter;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    ImageView pic;
     TextView guestName;
-
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
 
 
     @Override
@@ -40,46 +41,8 @@ public class NavigationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
 
-        pic=(ImageView)findViewById(R.id.pictureIV);
-        pic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        //TabActiviy Code
-
-        final int[] ICONS = new int[]{
-                R.drawable.ic_menu_camera,
-                R.drawable.ic_menu_gallery,
-                R.drawable.ic_menu_send
-        };
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.getTabAt(0).setIcon(ICONS[0]);
-        tabLayout.getTabAt(1).setIcon(ICONS[1]);
-        tabLayout.getTabAt(2).setIcon(ICONS[2]);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-
-
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //Nav code
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -108,6 +71,44 @@ public class NavigationActivity extends AppCompatActivity
         String name = intent.getStringExtra("GuestName");
         guestName.setText("Hi. "+  name+ " !");
         guestName.setTextColor(Color.WHITE);
+
+
+        //Tabs <code></code>
+
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.addTab(tabLayout.newTab().setText("PersonalInfo"));
+        tabLayout.addTab(tabLayout.newTab().setText("CareerObjective"));
+        tabLayout.addTab(tabLayout.newTab().setText("AcademicInfo"));
+        tabLayout.addTab(tabLayout.newTab().setText("Exprerience"));
+        tabLayout.addTab(tabLayout.newTab().setText("Acheivements"));
+        tabLayout.addTab(tabLayout.newTab().setText("Stregnths&Hobbies"));
+        tabLayout.addTab(tabLayout.newTab().setText("Skills"));
+        tabLayout.addTab(tabLayout.newTab().setText("CareerObjective"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.container);
+        final TabsPagerAdapter adapter = new TabsPagerAdapter
+                (getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
 
     }
 
@@ -166,128 +167,6 @@ public class NavigationActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-
-
-    //Tabs code
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        View rootView;
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            switch (getArguments().getInt(ARG_SECTION_NUMBER))
-            {
-                case 1: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_personal_info, container, false);
-                    break;
-                }
-                case 2: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_academic_info, container, false);
-                    break;
-                }
-
-                case 3: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_career_objective, container, false);
-                    break;
-                }
-                case 4: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_experience, container, false);
-                    break;
-                }
-                case 5: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_skills, container, false);
-                    break;
-                }
-
-                case 6: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_strength_hobbies, container, false);
-                    break;
-                }
-                case 7: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_acheivements, container, false);
-                    break;
-                }
-                case 8: {
-                    rootView = inflater.inflate(R.layout.fragment_tab_declaration, container, false);
-                    break;
-                }
-
-            }
-            return rootView;
-        }
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 8;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "PersonalInfo";
-                case 1:
-                    return "CareerObjective";
-                case 2:
-                    return "AcademicInfo";
-                case 3:
-                    return "Experience";
-                case 4:
-                    return "Skills";
-                case 5:
-                    return "Strengths&Hobbies";
-                case 6:
-                    return "Acheivements";
-                case 7:
-                    return "Declaration";
-            }
-            return null;
-        }
     }
 
 }

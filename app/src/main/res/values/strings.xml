@@ -29,6 +29,50 @@
         <item>Custom</item>
 
     </string-array>
+
+    <string-array name="careerObjectives">
+        <item>To achieve high career growth through a continuous learning process, keep myself dynamic, visionary and competitive with the changing scenario of the world and to contribute for the growth of organization.</item>
+        <item>As a Beginner in the Industrial field, while making a  positive  contribution, I would like to build a career, making the best use of my analytical, creative and logical skills to perform the job efficiently</item>
+        <item>Looking for opportunities to build my carrier that would help me in achieving greater practical excellence in software industry, exceptional with hardworking nature along with good communication skill to explore the requirements and come up with innovative solution</item>
+        <item>To be able to utilize the knowledge already gained, in a responsible and proper manner resulting in a value add to the organization and to reach the apex of my career in the process.</item>
+
+        <item>To work in a highly competitive environment with a perfect challenge by contributing the best for     the growth of the organization while ensuring growth in personal career.</item>
+        <item>To work in a Challenging environment where I can put my best efforts and        knowledge to reach the respective company’s goals and objectives.</item>
+        <item>To work in a progressive organization where I can enhance my skills and learning to contribute to the success of the organization</item>
+        <item>To be an achiever with Challenging assignment wherever I work to grow in an organization which believes in growing through its people.</item>
+        <item>To work in a dynamic environment that enables me to utilize my Knowledge and learn new things, and to progress professionally and personally.</item>
+
+        <item>To work in a challenging environment where I can prove my capabilities through hard work and team play.</item>
+        <item>To obtain an entry-level position within an organization that offers security and professional growth which requires strong analytical and technical skills.</item>
+        <item>To work with a company this appreciates innovation so that I can enhance my knowledge and skills to give my best for the growth of the company.</item>
+        <item>To work in a challenging environment that provides generous opportunities for learning and advancement in my career.</item>
+        <item>Seeking a position to utilize my skills and abilities in the Information Technology that  offers professional  growth while  being resourceful, innovative and flexible.</item>
+
+        <item>To pursue a challenging career and be part of a progressive organization that gives scope to enhance my knowledge, skills and to reaches the pinnacle in the computing and research field with sheer determination, dedication and hard work.</item>
+        <item>Looking for a challenging career which will demand the best of my professional ability in terms of technical and analytical skills, and helps me in enhancing my current skill and knowledge.</item>
+        <item>To succeed in an environment of growth and excellence and earn a job which provides me job Satisfaction and self development and helps me achieve personal as well as organization goals.</item>
+        <item>Looking forward for a challenging environment, where I can refine my skill and expand my knowledge for the dynamic growth of the organization.</item>
+        <item>To work in an organization where I can acquire new knowledge, sharpen my skills and put my efforts on achieving organization as well as personal goals.</item>
+
+        <item>To enter into a hard working and sincere profession, contributing to the success of an organization and at the same time enhance my knowledge and develop my communication and interpersonal skills.</item>
+        <item>To work  in  an  organization  where  I  can  use  my  skills  and  knowledge  to  deliver  value added  results  that  provides  me  job  satisfaction  and  self development  which help me  achieve   personal   as well as  organizational  goals.</item>
+        <item>Looking forward to work with an organization which provides me an ample opportunity to explore my Technical skills towards organizational goals and be an ultimate resource to the organization</item>
+        <item>To acquire a position and contribute as a team member in a lively work environment ,focused on promoting business growth by providing better worth and service utilizing my communication, technical and organisational skills</item>
+        <item>Seeking a challenging position and a lively work environment where I can grow personally and also contribute in the company’s growth using my excellent communication, technical and organisational skills</item>
+
+        <item>To work for an organisationwhich provides me the opportunity to improve my skills along with the organisation objectives.</item>
+        <item>A position to constantly learn, contribute and grow along with the organization.</item>
+        <item>To take up a challenging position in a dynamic organization, where my qualifications, skills and abilities would be of value and which provides opportunities for me and also to learn interesting technologies, which make me to see myself in a responsible position within 2-3 years.</item>
+        <item>To be associated with a progressive organization that gives scope to update my skills according to latest trends and to be a part of the team that dynamically works towards the growth of the organization.</item>
+        <item>A challenging position in a technical organization where I can enhance my skills and strength in conjunction with the institution’s goal and achieve excellence through experience.</item>
+
+        <item>To obtain challenging position that best utilizes my skills and provide opportunities to grow my technical and managerial skills which would enable me as a fresh graduate to grow while fulfilling organizational goals.</item>
+        <item>To work in a challenging environment where I can show my technical skill’s, creativity and contribute to the growth of an organization.</item>
+        <item>Seeking for opportunities and secure a position where I can efficiently contribute my  skills and abilities for the growth of the organization and my professional career.</item>
+        <item>To associate myself with an organization to prove my innovative skills and to work in a position where my skills and knowledge are utilized in the best possible way, which provides me with an opportunity for growth in my professional career and also contribute to the growth of the organization</item>
+        <item>Custom</item>
+    </string-array>
+
     <string name="title_activity_tab">TabActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
 </resources>

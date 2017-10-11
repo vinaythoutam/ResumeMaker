@@ -12,14 +12,13 @@ import android.transition.Explode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.example.vinay.resumebuilder.model.CardDetails;
+
 import java.util.List;
 
 /**
@@ -44,7 +43,7 @@ public class AddProfilesActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             Explode explode = new Explode();
-            explode.setDuration(500);
+            explode.setDuration(200);
             getWindow().setExitTransition(explode);
             getWindow().setEnterTransition(explode);
         }
@@ -81,7 +80,7 @@ public class AddProfilesActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showChangeLangDialog();
+                showAddProfileDialog();
             }
         });
 
@@ -98,26 +97,9 @@ public class AddProfilesActivity extends AppCompatActivity {
 
             }
         });
-//        ImageView del = (ImageView) findViewById(R.id.delCard);
-//        del.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                int id = v.getId();
-//                Toast.makeText(AddProfilesActivity.this, ""+ id, Toast.LENGTH_SHORT).show();
-//                //boolean n = dbHandler.deleteProfile();
-//                //Toast.makeText(context, "deleted " + position + n, Toast.LENGTH_SHORT).show();
-//
-//                Intent intent1 = new Intent(getApplicationContext(),AddProfilesActivity.class);
-//                finish();
-//                overridePendingTransition( 0, 0);
-//                startActivity(intent1);
-//                overridePendingTransition( 0, 0);
-//            }
-//        });
     }
 
-    public void showChangeLangDialog() {
+    public void showAddProfileDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
@@ -130,26 +112,10 @@ public class AddProfilesActivity extends AppCompatActivity {
 
         dialogBuilder.setTitle("Resume Builder");
         dialogBuilder.setMessage("Enter your name");
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                if(position==4)
-//                {
-//                    Toast.makeText(AddProfilesActivity.this, "hellooo", Toast.LENGTH_SHORT).show();
-//                    edt2.setVisibility(View.VISIBLE);
-//                    spinner.setVisibility(View.GONE);
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
         dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+
             public void onClick(DialogInterface dialog, int whichButton) {
                 //do something with edt.getText().toString();
-
                 String pName = edt.getText().toString();
                 String pType = spinner.getSelectedItem().toString();
                 CardDetails cardDetails = new CardDetails();
