@@ -8,47 +8,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Career Objective"
-        android:textSize="25dp"/>
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:paddingBottom="10dp"/>
+    <View style="@style/Divider" />
 
-    <Spinner
-        android:id="@+id/coSpinner"
-        android:layout_width="@dimen/_250sdp"
-        android:layout_height="wrap_content"
-        android:entries="@array/careerObjectives"
-        android:popupBackground="@drawable/bg"
-        android:spinnerMode="dialog">
 
-    </Spinner>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_edit_text">
         <EditText
-            android:id="@+id/search"
+            android:layout_margin="10dp"
+            android:id="@+id/coET"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:drawablePadding="8dp"
-            android:paddingLeft="30dp"
+            android:layout_height="100dp"
+            android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:inputType="text"
-            android:maxLines="10"
-            android:background="@drawable/round_edit_text"
-            android:layout_weight="1">
+            android:inputType="textMultiLine"
+            android:background="#fff"
+            android:layout_weight="1"
+            android:hint="Make Your Selection / Type">
 
             <requestFocus />
         </EditText>
 
         <Button
             android:id="@+id/drop_down_co"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="right|center_vertical"
-            android:background="@drawable/if_arrow_down" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_action_down" />
     </LinearLayout>
 
 </LinearLayout>

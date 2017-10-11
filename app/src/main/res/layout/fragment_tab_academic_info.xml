@@ -13,8 +13,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Education Information"
-            android:textSize="30dp"
-            android:textStyle="bold" />
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <View style="@style/Divider" />
 
@@ -22,9 +23,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
-            android:text="* Basic / Graduation / PG"
+            android:text="* Graduation"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -68,7 +70,8 @@
             android:layout_marginTop="7dp"
             android:text="* Class X"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -106,7 +109,6 @@
                 android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
-        <View style="@style/Divider" />
 
         <TextView
             android:layout_width="match_parent"
@@ -114,7 +116,8 @@
             android:layout_marginTop="7dp"
             android:text="* Class XII / Diploma"
             android:textSize="20dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
