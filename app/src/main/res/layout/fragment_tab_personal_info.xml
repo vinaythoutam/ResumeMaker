@@ -58,7 +58,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/APNET"
+            android:id="@+id/apnET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="AlternatePhoneNumber(Optional)"

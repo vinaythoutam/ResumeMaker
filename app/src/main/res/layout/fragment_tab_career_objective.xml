@@ -41,5 +41,11 @@
             android:layout_height="40dp"
             android:background="@drawable/ic_action_down" />
     </LinearLayout>
-
+    <Button
+        android:id="@+id/saveCOBtn"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/save_btn"
+        android:text="save"/>
 </LinearLayout>

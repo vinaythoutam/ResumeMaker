@@ -33,7 +33,9 @@ public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
+    public static int cid;
     TextView guestName;
+
 
 
     @Override
@@ -69,6 +71,7 @@ public class NavigationActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("GuestName");
+        cid=intent.getIntExtra("Cid",-1);
         guestName.setText("Hi. "+  name+ " !");
         guestName.setTextColor(Color.WHITE);
 

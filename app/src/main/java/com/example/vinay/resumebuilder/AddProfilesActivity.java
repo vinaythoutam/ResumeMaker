@@ -88,10 +88,12 @@ public class AddProfilesActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 String name = names[position];
+                int cid= ids[position];
                 //Toast.makeText(AddProfilesActivity.this, "Hi"+ name, Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), NavigationActivity.class);
                 intent.putExtra("GuestName", name);
+                intent.putExtra("Cid",cid);
                 startActivity(intent);
 
 

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import com.example.vinay.resumebuilder.model.CardDetails;
+import com.example.vinay.resumebuilder.model.CareerObjective;
 import com.example.vinay.resumebuilder.model.PersonalInfo;
 
 import java.text.SimpleDateFormat;
@@ -21,7 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 17;
+    private static final int DATABASE_VERSION = 21;
 
     // Database Name
     private static final String DATABASE_NAME = "resumebuilder";
@@ -29,6 +30,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // profile table name
     private static final String TABLE_PROFILE_NAMES = "profiles";
     private static final String TABLE_PERSONAL_INFO = "personal_info";
+    private static final String TABLE_CAREER_OBJ = "career_obj";
 
 
     // profile Table Columns names
@@ -37,21 +39,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_DATE = "cdate";
     private static final String KEY_RTYPE = "ctype";
 
-    //Personal info table
+    //Personal info table columns
     private static final String KEY_FOREIGN = "fid";
     private static final String PI_KEY_ID = "pid";
     private static final String PI_KEY_FULLNAME = "pfullname";
     private static final String PI_KEY_PHONE = "pphone";
+    private static final String PI_KEY_ALT_PHONE = "paltphone";
     private static final String PI_KEY_EMAIL = "pemail";
+    private static final String PI_KEY_ALT_EMAIL = "paltemail";
     private static final String PI_KEY_HOUSE = "phouse";
     private static final String PI_KEY_STREET = "pstreet";
     private static final String PI_KEY_ADDRESS = "paddress";
     private static final String PI_KEY_COUNTRY = "pcountry";
     private static final String PI_KEY_CITY = "pcity";
+    private static final String PI_KEY_PINCODE = "ppincode";
+    private static final String PI_KEY_PAN = "ppan";
+    private static final String PI_KEY_PASSPORT = "ppassport";
     private static final String PI_KEY_DOB = "pdob";
     private static final String PI_KEY_GENDER = "pgender";
     private static final String PI_KEY_MARITAL_STATUS = "pmarital";
     private static final String PI_KEY_PHOTO = "ppicture";
+
+
+    // career objective Table Columns names
+    private static final String CO_KEY_ID = "pid";
+    private static final String CO_KEY_CID = "cid";
+    private static final String CO_KEY_CO = "careeobj";
 
 
     public DatabaseHandler(Context context) {
@@ -68,15 +81,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_PINFO_TABLE = "CREATE TABLE " + TABLE_PERSONAL_INFO + "("
                 + PI_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PI_KEY_FULLNAME + " TEXT,"
-                + PI_KEY_PHONE + " INTEGER, " + PI_KEY_EMAIL + " TEXT, " +
+                + PI_KEY_PHONE + " INTEGER, " + PI_KEY_ALT_PHONE + " INTEGER, " + PI_KEY_EMAIL + " TEXT, "
+                + PI_KEY_ALT_EMAIL + " TEXT, " +
                 PI_KEY_HOUSE + " TEXT, " + PI_KEY_STREET + " TEXT, " + PI_KEY_ADDRESS + " TEXT, " +
-                PI_KEY_COUNTRY + " TEXT, " + PI_KEY_CITY + " TEXT, " + PI_KEY_DOB + " TEXT, " + PI_KEY_GENDER + " TEXT, " +
+                PI_KEY_COUNTRY + " TEXT, " + PI_KEY_CITY + " TEXT, " + PI_KEY_PINCODE + " INTEGER, " + PI_KEY_PAN + " TEXT, "
+                + PI_KEY_PASSPORT + " TEXT, " + PI_KEY_DOB + " TEXT, " + PI_KEY_GENDER + " TEXT, " +
                 PI_KEY_MARITAL_STATUS + " TEXT, " + PI_KEY_PHOTO + " BLOB, " + KEY_CID + " INTEGER " + ")";
 
         //+ KEY_FOREIGN + " INTEGER, "+ "FOREIGN KEY(" + KEY_FOREIGN + ") REFERENCES "+ TABLE_PROFILE_NAMES + " (fid) "
 
+        String CREATE_CO_TABLE = "CREATE TABLE " + TABLE_CAREER_OBJ + "("
+                + CO_KEY_ID + " INTEGER PRIMARY KEY, " + CO_KEY_CID + " INTEGER,"
+                + CO_KEY_CO + " TEXT " + ")";
+
         db.execSQL(CREATE_PROFILE_TABLE);
         db.execSQL(CREATE_PINFO_TABLE);
+        db.execSQL(CREATE_CO_TABLE);
+
     }
 
     // Upgrading database
@@ -87,6 +108,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Create tables again
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PERSONAL_INFO);
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CAREER_OBJ);
 
         onCreate(db);
     }
@@ -167,16 +190,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(PI_KEY_FULLNAME, pi.getpFullname());
         values.put(PI_KEY_PHONE, pi.getpPhoneNumber());
+        values.put(PI_KEY_ALT_PHONE, pi.getpAltPhoneNumber());
         values.put(PI_KEY_EMAIL, pi.getpEmail());
+        values.put(PI_KEY_ALT_EMAIL, pi.getpAltEmail());
         values.put(PI_KEY_HOUSE, pi.getpHouse());
         values.put(PI_KEY_STREET, pi.getpStreet());
         values.put(PI_KEY_ADDRESS, pi.getpAddress());
         values.put(PI_KEY_COUNTRY, pi.getpCountry());
         values.put(PI_KEY_CITY, pi.getpCity());
+        values.put(PI_KEY_PINCODE, pi.getpPincode());
+        values.put(PI_KEY_PAN, pi.getpPan());
+        values.put(PI_KEY_PASSPORT, pi.getpPassport());
         values.put(PI_KEY_DOB, pi.getpDob());
         values.put(PI_KEY_GENDER, pi.getpGender());
         values.put(PI_KEY_MARITAL_STATUS, pi.getpMStatus());
         values.put(PI_KEY_PHOTO, pi.getpImage());
+        values.put(KEY_CID, pi.getCid());
 
         // Inserting Row
         long n = db.insert(TABLE_PERSONAL_INFO, null, values);
@@ -219,6 +248,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             e.printStackTrace();
             return defaultValue;
         }
+    }
+
+
+    // Adding Career Objective
+    public long addCO(CareerObjective co) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        ContentValues values = new ContentValues();
+        values.put(CO_KEY_CID, co.getCid());
+        values.put(CO_KEY_CO, co.getCo());
+
+        // Inserting Row
+        long n = db.insert(TABLE_CAREER_OBJ, null, values);
+        //db.close(); // Closing database connection
+        return n;
     }
 
 }
