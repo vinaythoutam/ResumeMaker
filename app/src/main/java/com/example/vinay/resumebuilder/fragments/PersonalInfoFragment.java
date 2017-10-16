@@ -37,10 +37,10 @@ public class PersonalInfoFragment extends Fragment {
 
     DatabaseHandler dbHandler;
     Context context;
-    EditText name,phone,altPhone,email,altEmail,house,street,address,country,city,pincode,pan,passport,dob;
-    RadioButton gender,maritalStatus;
-    RadioGroup genderGroup,maritalGroup;
-    Button savePI;
+    EditText name, phone, altPhone, email, altEmail, house, street, address, country, city, pincode, pan, passport, dob;
+    RadioButton gender, maritalStatus;
+    RadioGroup genderGroup, maritalGroup;
+    Button savePI, updatePI;
     ImageView pic;
     private static final int CAMERA_PIC_REQUEST = 0;
     private static final int RESULT_LOAD_IMAGE = 1;
@@ -51,95 +51,170 @@ public class PersonalInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        context=getContext();
-        dbHandler= new DatabaseHandler(context);
+        context = getContext();
+        dbHandler = new DatabaseHandler(context);
         View rootView = inflater.inflate(R.layout.fragment_tab_personal_info, container, false);
 
-        name=(EditText)rootView.findViewById(R.id.fullNameET);
-        phone=(EditText)rootView.findViewById(R.id.phoneNumberET);
-        altPhone=(EditText)rootView.findViewById(R.id.apnET);
-        email=(EditText)rootView.findViewById(R.id.emailET);
-        altEmail=(EditText)rootView.findViewById(R.id.alternateEmailET);
-        house=(EditText)rootView.findViewById(R.id.houseET);
-        street=(EditText)rootView.findViewById(R.id.streetET);
-        address=(EditText)rootView.findViewById(R.id.addressEt);
-        country=(EditText)rootView.findViewById(R.id.countryET);
-        city=(EditText)rootView.findViewById(R.id.cityET);
-        pincode=(EditText)rootView.findViewById(R.id.pincodeET);
-        pan=(EditText)rootView.findViewById(R.id.panEt);
-        passport=(EditText)rootView.findViewById(R.id.passportEt);
-        dob=(EditText)rootView.findViewById(R.id.dobEt);
+        savePI = (Button) rootView.findViewById(R.id.saveBtn);
+        updatePI = (Button) rootView.findViewById(R.id.updateBtn);
 
-        genderGroup=(RadioGroup)rootView.findViewById(R.id.genderRG);
-        int selectedId=genderGroup.getCheckedRadioButtonId();
-        gender=(RadioButton)rootView.findViewById(selectedId);
+        name = (EditText) rootView.findViewById(R.id.fullNameET);
+        phone = (EditText) rootView.findViewById(R.id.phoneNumberET);
+        altPhone = (EditText) rootView.findViewById(R.id.apnET);
+        email = (EditText) rootView.findViewById(R.id.emailET);
+        altEmail = (EditText) rootView.findViewById(R.id.alternateEmailET);
+        house = (EditText) rootView.findViewById(R.id.houseET);
+        street = (EditText) rootView.findViewById(R.id.streetET);
+        address = (EditText) rootView.findViewById(R.id.addressEt);
+        country = (EditText) rootView.findViewById(R.id.countryET);
+        city = (EditText) rootView.findViewById(R.id.cityET);
+        pincode = (EditText) rootView.findViewById(R.id.pincodeET);
+        pan = (EditText) rootView.findViewById(R.id.panEt);
+        passport = (EditText) rootView.findViewById(R.id.passportEt);
+        dob = (EditText) rootView.findViewById(R.id.dobEt);
 
-        maritalGroup=(RadioGroup)rootView.findViewById(R.id.maritalRG);
-        int selectedId1=maritalGroup.getCheckedRadioButtonId();
-        maritalStatus=(RadioButton)rootView.findViewById(selectedId1);
+        genderGroup = (RadioGroup) rootView.findViewById(R.id.genderRG);
+        int selectedId = genderGroup.getCheckedRadioButtonId();
+        gender = (RadioButton) rootView.findViewById(selectedId);
+
+        //Toast.makeText(context, ""+gender.getText().toString(), Toast.LENGTH_LONG).show();
+
+        maritalGroup = (RadioGroup) rootView.findViewById(R.id.maritalRG);
+        int selectedId1 = maritalGroup.getCheckedRadioButtonId();
+        maritalStatus = (RadioButton) rootView.findViewById(selectedId1);
 
 
+        pic = (ImageView) rootView.findViewById(R.id.picIV);
 
-        pic=(ImageView)rootView.findViewById(R.id.picIV);
-        pic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        int cid = NavigationActivity.cid;
+        PersonalInfo personalInfo = dbHandler.getSinglePI(cid);
+        //Toast.makeText(context, "hello"+personalInfo.getpGender()+personalInfo.getpMStatus(), Toast.LENGTH_LONG).show();
+       if (personalInfo!= null) {
+//            //do  nothing
+           //Toast.makeText(context, "Hi"+personalInfo.getpFullname(), Toast.LENGTH_SHORT).show();
+           name.setText(personalInfo.getpFullname());
+           phone.setText(personalInfo.getpPhoneNumber());
+           altPhone.setText(personalInfo.getpAltPhoneNumber());
+           email.setText(personalInfo.getpEmail());
+           altEmail.setText(personalInfo.getpAltEmail());
+           house.setText(personalInfo.getpHouse());
+           street.setText(personalInfo.getpStreet());
+           address.setText(personalInfo.getpAddress());
+           country.setText(personalInfo.getpCountry());
+           city.setText(personalInfo.getpCity());
+           pincode.setText(personalInfo.getpPincode());
+           dob.setText(personalInfo.getpDob());
+           pan.setText(personalInfo.getpPan());
+           passport.setText(personalInfo.getpPassport());
+           gender.setText(personalInfo.getpGender());
+           maritalStatus.setText(personalInfo.getpMStatus());
 
-                showCameraChooseDialog();
 
-            }
-        });
+           savePI.setVisibility(View.GONE);
+           updatePI.setVisibility(View.VISIBLE);
+           updatePI.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
 
-        savePI=(Button)rootView.findViewById(R.id.saveBtn);
-        savePI.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                   PersonalInfo personalInfo = modelPI();
+                   long n = dbHandler.updatePersonalInfo(personalInfo);
+                   //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
+                   if (n > 0) {
+                       Toast.makeText(context, "PI updated", Toast.LENGTH_SHORT).show();
 
-                PersonalInfo personalInfo = new PersonalInfo();
-                personalInfo.setpFullname(name.getText().toString());
-                personalInfo.setpPhoneNumber(Integer.parseInt(phone.getText().toString()));
-                personalInfo.setpAltPhoneNumber(Integer.parseInt(altPhone.getText().toString()));
-                personalInfo.setpEmail(email.getText().toString());
-                personalInfo.setpAltEmail(altEmail.getText().toString());
-                personalInfo.setpHouse(house.getText().toString());
-                personalInfo.setpStreet(street.getText().toString());
-                personalInfo.setpAddress(address.getText().toString());
-                personalInfo.setpCountry(country.getText().toString());
-                personalInfo.setpCity(city.getText().toString());
-                personalInfo.setpPincode(Integer.parseInt(pincode.getText().toString()));
-                personalInfo.setpPan(pan.getText().toString());
-                personalInfo.setpPassport(passport.getText().toString());
-                personalInfo.setpDob(dob.getText().toString());
-                personalInfo.setpGender(gender.getText().toString());
-                personalInfo.setpMStatus(maritalStatus.getText().toString());
-                personalInfo.setCid(NavigationActivity.cid);
+                   } else {
+                       Toast.makeText(context, "Problem in updating", Toast.LENGTH_SHORT).show();
 
-                //convert image to byte[]
-                Bitmap bitmap = ((BitmapDrawable) pic.getDrawable()).getBitmap();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] imageInByte = baos.toByteArray();
+                   }
 
-                personalInfo.setpImage(imageInByte);
+               }
+           });
 
-                long n = dbHandler.addPersonalInfo(personalInfo);
-                //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
-                if (n > 0) {
-                    Toast.makeText(context, "PI saved", Toast.LENGTH_SHORT).show();
+        } else {
 
-                } else {
-                    Toast.makeText(context, "Problem in adding", Toast.LENGTH_SHORT).show();
+            pic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    showCameraChooseDialog();
 
                 }
+            });
+
+            savePI.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    PersonalInfo personalInfo = modelPI();
+                    long n = dbHandler.addPersonalInfo(personalInfo);
+                    //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
+                    if (n > 0) {
+                        Toast.makeText(context, "PI saved", Toast.LENGTH_SHORT).show();
+                        savePI.setVisibility(View.GONE);
+                        updatePI.setVisibility(View.VISIBLE);
+
+                    } else {
+                        Toast.makeText(context, "Problem in adding", Toast.LENGTH_SHORT).show();
+
+                    }
 
 
-            }
-        });
+                }
+            });
+            updatePI.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    PersonalInfo personalInfo = modelPI();
+                    long n = dbHandler.updatePersonalInfo(personalInfo);
+                    //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
+                    if (n > 0) {
+                        Toast.makeText(context, "PI updated", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(context, "Problem in updating", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                }
+            });
+
+        }
         return rootView;
     }
 
+    public PersonalInfo modelPI() {
+        PersonalInfo personalInfo = new PersonalInfo();
+        personalInfo.setpFullname(name.getText().toString());
+        personalInfo.setpPhoneNumber(phone.getText().toString());
+        personalInfo.setpAltPhoneNumber(altPhone.getText().toString());
+        personalInfo.setpEmail(email.getText().toString());
+        personalInfo.setpAltEmail(altEmail.getText().toString());
+        personalInfo.setpHouse(house.getText().toString());
+        personalInfo.setpStreet(street.getText().toString());
+        personalInfo.setpAddress(address.getText().toString());
+        personalInfo.setpCountry(country.getText().toString());
+        personalInfo.setpCity(city.getText().toString());
+        personalInfo.setpPincode(pincode.getText().toString());
+        personalInfo.setpPan(pan.getText().toString());
+        personalInfo.setpPassport(passport.getText().toString());
+        personalInfo.setpDob(dob.getText().toString());
+       // personalInfo.setpGender(gender.getText().toString());
+        // personalInfo.setpMStatus(maritalStatus.getText().toString());
+        personalInfo.setCid(NavigationActivity.cid);
+
+        //convert image to byte[]
+        Bitmap bitmap = ((BitmapDrawable) pic.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageInByte = baos.toByteArray();
+
+        personalInfo.setpImage(imageInByte);
+        return personalInfo;
+    }
+
     public void showCameraChooseDialog() {
-        final Button cam,gall;
+        final Button cam, gall;
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.camera_dialog, null);
@@ -149,10 +224,10 @@ public class PersonalInfoFragment extends Fragment {
         dialogBuilder.setMessage("Choose one");
 
 
-        final  AlertDialog b = dialogBuilder.create();
+        final AlertDialog b = dialogBuilder.create();
         b.show();
 
-        cam=(Button)dialogView.findViewById(R.id.openCamera);
+        cam = (Button) dialogView.findViewById(R.id.openCamera);
         cam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,7 +237,7 @@ public class PersonalInfoFragment extends Fragment {
             }
         });
 
-        gall=(Button)dialogView.findViewById(R.id.openGallery);
+        gall = (Button) dialogView.findViewById(R.id.openGallery);
         gall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,35 +250,36 @@ public class PersonalInfoFragment extends Fragment {
             }
         });
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 
-            switch(requestCode){
-                case 0: // Do your stuff here...
-                    Bitmap image = (Bitmap) data.getExtras().get("data");
-                    pic.setImageBitmap(image);
-                    break;
-                case 1: // Do your other stuff here...
+        switch (requestCode) {
+            case 0: // Do your stuff here...
+                Bitmap image = (Bitmap) data.getExtras().get("data");
+                pic.setImageBitmap(image);
+                break;
+            case 1: // Do your other stuff here...
 
-                    super.onActivityResult(requestCode, resultCode, data);
+                super.onActivityResult(requestCode, resultCode, data);
 
-                    if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-                        Uri selectedImage = data.getData();
-                        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+                if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-                        Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                                filePathColumn, null, null, null);
-                        cursor.moveToFirst();
+                    Cursor cursor = getActivity().getContentResolver().query(selectedImage,
+                            filePathColumn, null, null, null);
+                    cursor.moveToFirst();
 
-                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                        String picturePath = cursor.getString(columnIndex);
-                        cursor.close();
-                        pic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String picturePath = cursor.getString(columnIndex);
+                    cursor.close();
+                    pic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
-                    }
-                    break;
-            }
-
+                }
+                break;
         }
+
     }
+}
 

@@ -181,10 +181,6 @@ public class RegisterActivity extends AppCompatActivity {
 
 
 
-
-
-
-
     private void ShowEnterAnimation() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 

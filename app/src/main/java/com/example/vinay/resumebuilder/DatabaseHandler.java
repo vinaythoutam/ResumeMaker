@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import com.example.vinay.resumebuilder.model.AcademicInfo;
 import com.example.vinay.resumebuilder.model.CardDetails;
 import com.example.vinay.resumebuilder.model.CareerObjective;
 import com.example.vinay.resumebuilder.model.PersonalInfo;
@@ -22,7 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 21;
+    private static final int DATABASE_VERSION = 23;
 
     // Database Name
     private static final String DATABASE_NAME = "resumebuilder";
@@ -31,6 +32,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_PROFILE_NAMES = "profiles";
     private static final String TABLE_PERSONAL_INFO = "personal_info";
     private static final String TABLE_CAREER_OBJ = "career_obj";
+    private static final String TABLE_ACADEMIC_INFO = "academic_info";
 
 
     // profile Table Columns names
@@ -66,6 +68,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String CO_KEY_CID = "cid";
     private static final String CO_KEY_CO = "careeobj";
 
+    // academic info Table Columns names
+    private static final String AI_KEY_ID = "pid";
+    private static final String AI_KEY_CID = "cid";
+    private static final String AI_KEY_GNAME = "gname";
+    private static final String AI_KEY_GYEAR = "gyear";
+    private static final String AI_KEY_GPERCENTAGE = "gpercentage";
+    private static final String AI_KEY_SNAME = "sname";
+    private static final String AI_KEY_SYEAR = "syear";
+    private static final String AI_KEY_SPERCENTAGE = "spercentage";
+    private static final String AI_KEY_CNAME = "cname";
+    private static final String AI_KEY_CYEAR = "cyear";
+    private static final String AI_KEY_CPERCENTAGE = "cpercentage";
+
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -81,10 +96,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_PINFO_TABLE = "CREATE TABLE " + TABLE_PERSONAL_INFO + "("
                 + PI_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PI_KEY_FULLNAME + " TEXT,"
-                + PI_KEY_PHONE + " INTEGER, " + PI_KEY_ALT_PHONE + " INTEGER, " + PI_KEY_EMAIL + " TEXT, "
+                + PI_KEY_PHONE + " TEXT, " + PI_KEY_ALT_PHONE + " TEXT, " + PI_KEY_EMAIL + " TEXT, "
                 + PI_KEY_ALT_EMAIL + " TEXT, " +
                 PI_KEY_HOUSE + " TEXT, " + PI_KEY_STREET + " TEXT, " + PI_KEY_ADDRESS + " TEXT, " +
-                PI_KEY_COUNTRY + " TEXT, " + PI_KEY_CITY + " TEXT, " + PI_KEY_PINCODE + " INTEGER, " + PI_KEY_PAN + " TEXT, "
+                PI_KEY_COUNTRY + " TEXT, " + PI_KEY_CITY + " TEXT, " + PI_KEY_PINCODE + " TEXT, " + PI_KEY_PAN + " TEXT, "
                 + PI_KEY_PASSPORT + " TEXT, " + PI_KEY_DOB + " TEXT, " + PI_KEY_GENDER + " TEXT, " +
                 PI_KEY_MARITAL_STATUS + " TEXT, " + PI_KEY_PHOTO + " BLOB, " + KEY_CID + " INTEGER " + ")";
 
@@ -94,9 +109,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + CO_KEY_ID + " INTEGER PRIMARY KEY, " + CO_KEY_CID + " INTEGER,"
                 + CO_KEY_CO + " TEXT " + ")";
 
+        String CREATE_AI_TABLE = "CREATE TABLE " + TABLE_ACADEMIC_INFO + "("
+                + AI_KEY_ID + " INTEGER PRIMARY KEY, " + AI_KEY_CID + " INTEGER,"
+                + AI_KEY_GNAME + " TEXT, "  + AI_KEY_GYEAR + " TEXT, " + AI_KEY_GPERCENTAGE + " TEXT, "
+                + AI_KEY_SNAME + " TEXT, "  + AI_KEY_SYEAR + " TEXT, " + AI_KEY_SPERCENTAGE + " TEXT, "
+                + AI_KEY_CNAME + " TEXT, "  + AI_KEY_CYEAR + " TEXT, " + AI_KEY_CPERCENTAGE + " TEXT " + ")";
+
         db.execSQL(CREATE_PROFILE_TABLE);
         db.execSQL(CREATE_PINFO_TABLE);
         db.execSQL(CREATE_CO_TABLE);
+        db.execSQL(CREATE_AI_TABLE);
 
     }
 
@@ -110,6 +132,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PERSONAL_INFO);
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CAREER_OBJ);
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACADEMIC_INFO);
 
         onCreate(db);
     }
@@ -182,10 +206,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
+    //getting single record from personal info
+    public PersonalInfo getSinglePI(int cid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_PERSONAL_INFO + " WHERE "
+                + KEY_CID + " = " + cid;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        PersonalInfo personalInfo = new PersonalInfo();
+        if (c != null && c.moveToFirst()) {
+
+            personalInfo.setpFullname(c.getString(c.getColumnIndex(PI_KEY_FULLNAME)));
+            personalInfo.setpPhoneNumber(c.getString(c.getColumnIndex(PI_KEY_PHONE)));
+            personalInfo.setpAltPhoneNumber(c.getString(c.getColumnIndex(PI_KEY_ALT_PHONE)));
+            personalInfo.setpEmail(c.getString(c.getColumnIndex(PI_KEY_EMAIL)));
+            personalInfo.setpAltEmail(c.getString(c.getColumnIndex(PI_KEY_ALT_EMAIL)));
+            personalInfo.setpHouse(c.getString(c.getColumnIndex(PI_KEY_HOUSE)));
+            personalInfo.setpStreet(c.getString(c.getColumnIndex(PI_KEY_STREET)));
+            personalInfo.setpAddress(c.getString(c.getColumnIndex(PI_KEY_ADDRESS)));
+            personalInfo.setpCountry(c.getString(c.getColumnIndex(PI_KEY_COUNTRY)));
+            personalInfo.setpCity(c.getString(c.getColumnIndex(PI_KEY_CITY)));
+            personalInfo.setpPincode(c.getString(c.getColumnIndex(PI_KEY_PINCODE)));
+            personalInfo.setpPan(c.getString(c.getColumnIndex(PI_KEY_PAN)));
+            personalInfo.setpPassport(c.getString(c.getColumnIndex(PI_KEY_PASSPORT)));
+            personalInfo.setpDob(c.getString(c.getColumnIndex(PI_KEY_DOB)));
+            personalInfo.setpGender(c.getString(c.getColumnIndex(PI_KEY_GENDER)));
+            personalInfo.setpMStatus(c.getString(c.getColumnIndex(PI_KEY_MARITAL_STATUS)));
+            personalInfo.setCid(c.getInt(c.getColumnIndex(KEY_CID)));
+
+            c.close();
+            return personalInfo;
+        }
+        return null;
+    }
+
     //Add Personal Info
     public long addPersonalInfo(PersonalInfo pi) {
         SQLiteDatabase db = this.getWritableDatabase();
-
 
         ContentValues values = new ContentValues();
         values.put(PI_KEY_FULLNAME, pi.getpFullname());
@@ -213,17 +271,46 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return n;
     }
 
+    //Update Personal Info
+    public long updatePersonalInfo(PersonalInfo pi) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(PI_KEY_FULLNAME, pi.getpFullname());
+        values.put(PI_KEY_PHONE, pi.getpPhoneNumber());
+        values.put(PI_KEY_ALT_PHONE, pi.getpAltPhoneNumber());
+        values.put(PI_KEY_EMAIL, pi.getpEmail());
+        values.put(PI_KEY_ALT_EMAIL, pi.getpAltEmail());
+        values.put(PI_KEY_HOUSE, pi.getpHouse());
+        values.put(PI_KEY_STREET, pi.getpStreet());
+        values.put(PI_KEY_ADDRESS, pi.getpAddress());
+        values.put(PI_KEY_COUNTRY, pi.getpCountry());
+        values.put(PI_KEY_CITY, pi.getpCity());
+        values.put(PI_KEY_PINCODE, pi.getpPincode());
+        values.put(PI_KEY_PAN, pi.getpPan());
+        values.put(PI_KEY_PASSPORT, pi.getpPassport());
+        values.put(PI_KEY_DOB, pi.getpDob());
+        values.put(PI_KEY_GENDER, pi.getpGender());
+        values.put(PI_KEY_MARITAL_STATUS, pi.getpMStatus());
+        values.put(PI_KEY_PHOTO, pi.getpImage());
+
+        // Inserting Row
+        long n = db.update(TABLE_PERSONAL_INFO, values, "cid=" + pi.getCid(), null);
+        ;
+        //db.close(); // Closing database connection
+        return n;
+    }
 
     // Getting single contact
     public String getContact() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("select *from personal_info where pid = 1 ",null);
+        Cursor cursor = db.rawQuery("select *from personal_info where pid = 1 ", null);
 
         String name = cursor.getString(1);
 
 
-        return  name;
+        return name;
 
 
     }
@@ -265,5 +352,92 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //db.close(); // Closing database connection
         return n;
     }
+
+    //Update Career Objective
+    public long updateCO(CareerObjective co) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(CO_KEY_CID, co.getCid());
+        values.put(CO_KEY_CO, co.getCo());
+
+        // Inserting Row
+        long n = db.update(TABLE_CAREER_OBJ, values, "cid=" + co.getCid(), null);
+        ;
+        //db.close(); // Closing database connection
+        return n;
+    }
+
+    public CareerObjective getSingleCO(int cid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_CAREER_OBJ + " WHERE "
+                + KEY_CID + " = " + cid;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        CareerObjective careerObjective = new CareerObjective();
+        if (c != null && c.moveToFirst()) {
+
+            careerObjective.setCid(c.getInt(c.getColumnIndex(CO_KEY_CID)));
+            careerObjective.setCo(c.getString(c.getColumnIndex(CO_KEY_CO)));
+
+
+            c.close();
+            return careerObjective;
+        }
+        return null;
+    }
+
+    //Add Academic Info
+    public long addAcademicInfo(AcademicInfo ai) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(AI_KEY_CID, ai.getCid());
+        values.put(AI_KEY_GNAME, ai.getGname());
+        values.put(AI_KEY_GYEAR, ai.getGyear());
+        values.put(AI_KEY_GPERCENTAGE, ai.getGpercentage());
+        values.put(AI_KEY_SNAME, ai.getSname());
+        values.put(AI_KEY_SYEAR, ai.getSyear());
+        values.put(AI_KEY_SPERCENTAGE, ai.getSpercentage());
+        values.put(AI_KEY_CNAME, ai.getCname());
+        values.put(AI_KEY_CYEAR, ai.getCyear());
+        values.put(AI_KEY_CPERCENTAGE, ai.getCpercentage());
+
+        // Inserting Row
+        long n = db.insert(TABLE_ACADEMIC_INFO, null, values);
+        //db.close(); // Closing database connection
+        return n;
+    }
+
+    //Update Personal Info
+//    public long updateAcademicInfo(CareerObjective co) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//
+//        ContentValues values = new ContentValues();
+//        values.put(AI, pi.getpFullname());
+//        values.put(PI_KEY_PHONE, pi.getpPhoneNumber());
+//        values.put(PI_KEY_ALT_PHONE, pi.getpAltPhoneNumber());
+//        values.put(PI_KEY_EMAIL, pi.getpEmail());
+//        values.put(PI_KEY_ALT_EMAIL, pi.getpAltEmail());
+//        values.put(PI_KEY_HOUSE, pi.getpHouse());
+//        values.put(PI_KEY_STREET, pi.getpStreet());
+//        values.put(PI_KEY_ADDRESS, pi.getpAddress());
+//        values.put(PI_KEY_COUNTRY, pi.getpCountry());
+//        values.put(PI_KEY_CITY, pi.getpCity());
+//        values.put(PI_KEY_PINCODE, pi.getpPincode());
+//        values.put(PI_KEY_PAN, pi.getpPan());
+//        values.put(PI_KEY_PASSPORT, pi.getpPassport());
+//        values.put(PI_KEY_DOB, pi.getpDob());
+//        values.put(PI_KEY_GENDER, pi.getpGender());
+//        values.put(PI_KEY_MARITAL_STATUS, pi.getpMStatus());
+//        values.put(PI_KEY_PHOTO, pi.getpImage());
+//
+//        // Inserting Row
+//        long n = db.update(TABLE_PERSONAL_INFO, values, "cid=" + pi.getCid(), null);
+//        ;
+//        //db.close(); // Closing database connection
+//        return n;
+//    }
 
 }

@@ -2,14 +2,20 @@ package com.example.vinay.resumebuilder;
 
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.vinay.resumebuilder.model.CardDetails;
 
 public class ListViewAdapter extends BaseAdapter
 {
@@ -29,6 +35,8 @@ public class ListViewAdapter extends BaseAdapter
         this.dates = dates;
         this.types= types;
         this.ids=ids;
+        dbHandler= new DatabaseHandler(context);
+
 
     }
 
@@ -81,26 +89,49 @@ public class ListViewAdapter extends BaseAdapter
         holder.pDate.setText(dates[position]);
         holder.pType.setText(types[position]);
 
-                 holder.del = (ImageView) convertView.findViewById(R.id.delCard);
-                holder.del.setOnClickListener(new View.OnClickListener() {
+        holder.del = (ImageView) convertView.findViewById(R.id.delCard);
+        holder.del.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        int pos = ids[position];
-                        //Toast.makeText(context, "id"+pos, Toast.LENGTH_SHORT).show();
-                        dbHandler= new DatabaseHandler(context);
-                        boolean n = dbHandler.deleteProfile(pos);
+                        showDeleteProfileDialog(position);
 
-                        Toast.makeText(context, "deleted " + ids[position] +"pos"+position , Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(context,AddProfilesActivity.class);
-                        context.overridePendingTransition(0,0);
-                        context.finish();
-                        context.startActivity(intent);
-                        context.overridePendingTransition(0,0);
                     }
                 });
 
         return convertView;
+    }
+    public void showDeleteProfileDialog(final int position) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = context.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.delete_dialog, null);
+        dialogBuilder.setView(dialogView);
+
+        dialogBuilder.setMessage("Do you want to delete this Profile ?");
+        dialogBuilder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //do something with edt.getText().toString();
+                int pos = ids[position];
+
+                boolean n = dbHandler.deleteProfile(pos);
+
+                Toast.makeText(context, "deleted " + ids[position]+names[position]+"pos"+position , Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context,AddProfilesActivity.class);
+                context.overridePendingTransition(0,0);
+                context.finish();
+                context.startActivity(intent);
+                context.overridePendingTransition(0,0);
+
+            }
+        });
+        dialogBuilder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //pass
+            }
+        });
+        AlertDialog b = dialogBuilder.create();
+        b.show();
     }
 
 

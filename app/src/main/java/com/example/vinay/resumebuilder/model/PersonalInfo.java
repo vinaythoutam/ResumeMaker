@@ -10,7 +10,7 @@ public class PersonalInfo {
     int cid;
     String pFullname, pEmail, pAltEmail, pHouse, pStreet, pAddress, pCountry, pCity, pPan, pPassport, pDob, pGender, pMStatus;
     byte[] pImage;
-    int pPhoneNumber, pPincode, pAltPhoneNumber;
+    String pPhoneNumber, pPincode, pAltPhoneNumber;
 
 
     public int getCid() {
@@ -65,10 +65,6 @@ public class PersonalInfo {
         return pAltEmail;
     }
 
-    public int getpPincode() {
-        return pPincode;
-    }
-
     public String getpPan() {
         return pPan;
     }
@@ -77,11 +73,15 @@ public class PersonalInfo {
         return pPassport;
     }
 
-    public int getpPhoneNumber() {
+    public String getpPhoneNumber() {
         return pPhoneNumber;
     }
 
-    public int getpAltPhoneNumber() {
+    public String getpPincode() {
+        return pPincode;
+    }
+
+    public String getpAltPhoneNumber() {
         return pAltPhoneNumber;
     }
 
@@ -137,10 +137,6 @@ public class PersonalInfo {
         this.pAltEmail = pAltEmail;
     }
 
-    public void setpPincode(int pPincode) {
-        this.pPincode = pPincode;
-    }
-
     public void setpPan(String pPan) {
         this.pPan = pPan;
     }
@@ -149,11 +145,15 @@ public class PersonalInfo {
         this.pPassport = pPassport;
     }
 
-    public void setpPhoneNumber(int pPhoneNumber) {
+    public void setpPhoneNumber(String pPhoneNumber) {
         this.pPhoneNumber = pPhoneNumber;
     }
 
-    public void setpAltPhoneNumber(int pAltPhoneNumber) {
+    public void setpPincode(String pPincode) {
+        this.pPincode = pPincode;
+    }
+
+    public void setpAltPhoneNumber(String pAltPhoneNumber) {
         this.pAltPhoneNumber = pAltPhoneNumber;
     }
 }

@@ -25,7 +25,8 @@
             android:name=".RegisterActivity"
             android:theme="@style/Translucent" />
         <activity android:name=".LoginSuccessActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation"

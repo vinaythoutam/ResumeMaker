@@ -38,45 +38,107 @@ public class CareerObjectiveFragment extends Fragment {
     Button b1;
     DatabaseHandler dbHandler;
     Context context;
-    EditText editText;
+    EditText editText, careerObj;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        context=getContext();
-        dbHandler= new DatabaseHandler(context);
+        context = getContext();
+        dbHandler = new DatabaseHandler(context);
         View rootView = inflater.inflate(R.layout.fragment_tab_career_objective, container, false);
 
-        Button dropButton= (Button)rootView.findViewById(R.id.drop_down_co);
-         editText=(EditText)rootView.findViewById(R.id.coET);
-        dropButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCODialog();
-            }
-        });
+        Button dropButton = (Button) rootView.findViewById(R.id.drop_down_co);
+        final Button saveCO = (Button) rootView.findViewById(R.id.saveCOBtn);
+        final Button updateCO = (Button) rootView.findViewById(R.id.updateCOBtn);
+        editText = (EditText) rootView.findViewById(R.id.coET);
+        careerObj = (EditText) rootView.findViewById(R.id.coET);
 
-        Button saveCO=(Button)rootView.findViewById(R.id.saveCOBtn);
-        saveCO.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        int cid = NavigationActivity.cid;
+        CareerObjective careerObjective = dbHandler.getSingleCO(cid);
+        if (careerObjective != null) {
+            careerObj.setText(careerObjective.getCo());
 
-                CareerObjective careerObjective= new CareerObjective();
-                careerObjective.setCid(NavigationActivity.cid);
-                careerObjective.setCo(editText.getText().toString());
+            saveCO.setVisibility(View.GONE);
+            updateCO.setVisibility(View.VISIBLE);
+            updateCO.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                long n = dbHandler.addCO(careerObjective);
-                //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
-                if (n > 0) {
-                    Toast.makeText(context, "CO saved", Toast.LENGTH_SHORT).show();
+                    CareerObjective careerObjective = new CareerObjective();
+                    careerObjective.setCid(NavigationActivity.cid);
+                    careerObjective.setCo(editText.getText().toString());
 
-                } else {
-                    Toast.makeText(context, "Problem in adding", Toast.LENGTH_SHORT).show();
+                    long n = dbHandler.updateCO(careerObjective);
+                    //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
+                    if (n > 0) {
+                        Toast.makeText(context, "CO updated", Toast.LENGTH_SHORT).show();
 
+                    } else {
+                        Toast.makeText(context, "Problem in adding", Toast.LENGTH_SHORT).show();
+
+                    }
                 }
-            }
-        });
+            });
+            dropButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showCODialog();
+                }
+            });
 
+
+        } else {
+            saveCO.setVisibility(View.VISIBLE);
+            updateCO.setVisibility(View.GONE);
+            dropButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showCODialog();
+                }
+            });
+
+            saveCO.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    CareerObjective careerObjective = new CareerObjective();
+                    careerObjective.setCid(NavigationActivity.cid);
+                    careerObjective.setCo(editText.getText().toString());
+
+                    long n = dbHandler.addCO(careerObjective);
+                    //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
+                    if (n > 0) {
+                        Toast.makeText(context, "CO saved", Toast.LENGTH_SHORT).show();
+                        saveCO.setVisibility(View.GONE);
+                        updateCO.setVisibility(View.VISIBLE);
+
+                    } else {
+                        Toast.makeText(context, "Problem in adding", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            });
+            updateCO.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    CareerObjective careerObjective = new CareerObjective();
+                    careerObjective.setCid(NavigationActivity.cid);
+                    careerObjective.setCo(editText.getText().toString());
+
+                    long n = dbHandler.updateCO(careerObjective);
+                    //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
+                    if (n > 0) {
+                        Toast.makeText(context, "CO updated", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(context, "Problem in adding", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            });
+        }
 
         return rootView;
     }

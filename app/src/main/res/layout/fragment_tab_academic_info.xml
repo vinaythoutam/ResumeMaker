@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="University/Institute"
-                android:inputType="text" />
+                android:inputType="text"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -154,5 +154,20 @@
                 android:hint="%"
                 android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
+        <Button
+            android:id="@+id/aiSaveBtn"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/save_btn"
+            android:text="save"/>
+        <Button
+            android:id="@+id/aiUpdateBtn"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/save_btn"
+            android:text="update"
+            android:visibility="gone"/>
     </LinearLayout>
 </ScrollView>

@@ -36,8 +36,6 @@ public class NavigationActivity extends AppCompatActivity
     public static int cid;
     TextView guestName;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
