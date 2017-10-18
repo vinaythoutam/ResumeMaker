@@ -7,7 +7,7 @@ import android.media.Image;
  */
 public class CardDetails {
 
-    String cname,cdate,ctype;
+    String cname,cdate,ctype,cudate;
 
     int cid;
     Image image;
@@ -22,6 +22,10 @@ public class CardDetails {
 
     public void setCid(int cid) {
         this.cid = cid;
+    }
+
+    public void setCudate(String cudate) {
+        this.cudate = cudate;
     }
 
     public String getCname() {
@@ -42,5 +46,9 @@ public class CardDetails {
 
     public void setCtype(String ctype) {
         this.ctype = ctype;
+    }
+
+    public String getCudate() {
+        return cudate;
     }
 }

@@ -30,6 +30,7 @@ public class AddProfilesActivity extends AppCompatActivity {
     String names[] = null;
     String dates[] = null;
     String types[] = null;
+    String uDates[]= null;
     int ids[] = null;
     DatabaseHandler dbHandler;
     FloatingActionButton fab;
@@ -57,6 +58,7 @@ public class AddProfilesActivity extends AppCompatActivity {
             dates = new String[cd.size()];
             types = new String[cd.size()];
             ids   = new int[cd.size()];
+            uDates= new String[cd.size()];
 
             int i = 0;
             for (CardDetails d : cd) {
@@ -64,11 +66,13 @@ public class AddProfilesActivity extends AppCompatActivity {
                 dates[i] = d.getDate();
                 types[i] = d.getCtype();
                 ids[i]=d.getCid();
+                uDates[i] = d.getCudate();
+
                 //Toast.makeText(getApplicationContext(), "hi"+d.getCname(), Toast.LENGTH_SHORT).show();
                 i++;
             }
             lv = (ListView) findViewById(R.id.lvCards);
-            lviewAdapter = new ListViewAdapter(this, names, dates, types,ids);
+            lviewAdapter = new ListViewAdapter(this, names, dates, types,ids,uDates);
 
             lv.setAdapter(lviewAdapter);
         } else {

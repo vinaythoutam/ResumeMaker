@@ -170,4 +170,14 @@ public class NavigationActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Intent intent = new Intent(getApplicationContext(), NavActivityProfile.class);
+        finish();
+        overridePendingTransition( 0, 0);
+        startActivity(intent);
+        overridePendingTransition( 0, 0);
+
+    }
 }

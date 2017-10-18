@@ -23,7 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 23;
+    private static final int DATABASE_VERSION = 27;
 
     // Database Name
     private static final String DATABASE_NAME = "resumebuilder";
@@ -40,6 +40,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_NAME = "cname";
     private static final String KEY_DATE = "cdate";
     private static final String KEY_RTYPE = "ctype";
+    private static final String KEY_UDATE = "cudate";
 
     //Personal info table columns
     private static final String KEY_FOREIGN = "fid";
@@ -71,15 +72,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // academic info Table Columns names
     private static final String AI_KEY_ID = "pid";
     private static final String AI_KEY_CID = "cid";
+    private static final String AI_KEY_PGNAME = "pgname";
+    private static final String AI_KEY_PGYEAR = "pgyear";
+    private static final String AI_KEY_PGPERCENTAGE = "pgpercentage";
     private static final String AI_KEY_GNAME = "gname";
     private static final String AI_KEY_GYEAR = "gyear";
     private static final String AI_KEY_GPERCENTAGE = "gpercentage";
-    private static final String AI_KEY_SNAME = "sname";
-    private static final String AI_KEY_SYEAR = "syear";
-    private static final String AI_KEY_SPERCENTAGE = "spercentage";
     private static final String AI_KEY_CNAME = "cname";
     private static final String AI_KEY_CYEAR = "cyear";
     private static final String AI_KEY_CPERCENTAGE = "cpercentage";
+    private static final String AI_KEY_SNAME = "sname";
+    private static final String AI_KEY_SYEAR = "syear";
+    private static final String AI_KEY_SPERCENTAGE = "spercentage";
 
 
     public DatabaseHandler(Context context) {
@@ -92,7 +96,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_PROFILE_TABLE = "CREATE TABLE " + TABLE_PROFILE_NAMES + "("
                 + KEY_CID + " INTEGER PRIMARY KEY, " + KEY_NAME + " TEXT,"
-                + KEY_DATE + " TEXT, " + KEY_RTYPE + " TEXT " + ")";
+                + KEY_DATE + " TEXT, " + KEY_RTYPE + " TEXT, " + KEY_UDATE + " TEXT " + ")";
 
         String CREATE_PINFO_TABLE = "CREATE TABLE " + TABLE_PERSONAL_INFO + "("
                 + PI_KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + PI_KEY_FULLNAME + " TEXT,"
@@ -101,7 +105,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 PI_KEY_HOUSE + " TEXT, " + PI_KEY_STREET + " TEXT, " + PI_KEY_ADDRESS + " TEXT, " +
                 PI_KEY_COUNTRY + " TEXT, " + PI_KEY_CITY + " TEXT, " + PI_KEY_PINCODE + " TEXT, " + PI_KEY_PAN + " TEXT, "
                 + PI_KEY_PASSPORT + " TEXT, " + PI_KEY_DOB + " TEXT, " + PI_KEY_GENDER + " TEXT, " +
-                PI_KEY_MARITAL_STATUS + " TEXT, " + PI_KEY_PHOTO + " BLOB, " + KEY_CID + " INTEGER " + ")";
+                PI_KEY_MARITAL_STATUS + " TEXT, " + PI_KEY_PHOTO + " TEXT, " + KEY_CID + " INTEGER " + ")";
 
         //+ KEY_FOREIGN + " INTEGER, "+ "FOREIGN KEY(" + KEY_FOREIGN + ") REFERENCES "+ TABLE_PROFILE_NAMES + " (fid) "
 
@@ -111,9 +115,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_AI_TABLE = "CREATE TABLE " + TABLE_ACADEMIC_INFO + "("
                 + AI_KEY_ID + " INTEGER PRIMARY KEY, " + AI_KEY_CID + " INTEGER,"
+                + AI_KEY_PGNAME + " TEXT, "  + AI_KEY_PGYEAR + " TEXT, " + AI_KEY_PGPERCENTAGE + " TEXT, "
                 + AI_KEY_GNAME + " TEXT, "  + AI_KEY_GYEAR + " TEXT, " + AI_KEY_GPERCENTAGE + " TEXT, "
-                + AI_KEY_SNAME + " TEXT, "  + AI_KEY_SYEAR + " TEXT, " + AI_KEY_SPERCENTAGE + " TEXT, "
-                + AI_KEY_CNAME + " TEXT, "  + AI_KEY_CYEAR + " TEXT, " + AI_KEY_CPERCENTAGE + " TEXT " + ")";
+                + AI_KEY_CNAME + " TEXT, "  + AI_KEY_CYEAR + " TEXT, " + AI_KEY_CPERCENTAGE + " TEXT, "
+                + AI_KEY_SNAME + " TEXT, "  + AI_KEY_SYEAR + " TEXT, " + AI_KEY_SPERCENTAGE + " TEXT "
+                + ")";
 
         db.execSQL(CREATE_PROFILE_TABLE);
         db.execSQL(CREATE_PINFO_TABLE);
@@ -159,6 +165,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, cd.getCname());
         values.put(KEY_DATE, getDateTime());
         values.put(KEY_RTYPE, cd.getCtype());
+        values.put(KEY_UDATE,getDateTime());
 
         // Inserting Row
         long n = db.insert(TABLE_PROFILE_NAMES, null, values);
@@ -196,6 +203,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 cardDetails.setCname(cursor.getString(1));
                 cardDetails.setDate(cursor.getString(2));
                 cardDetails.setCtype(cursor.getString(3));
+                cardDetails.setCudate(cursor.getString(4));
                 // Adding profiles to list
                 cardDetailsList.add(cardDetails);
             } while (cursor.moveToNext());
@@ -234,6 +242,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             personalInfo.setpGender(c.getString(c.getColumnIndex(PI_KEY_GENDER)));
             personalInfo.setpMStatus(c.getString(c.getColumnIndex(PI_KEY_MARITAL_STATUS)));
             personalInfo.setCid(c.getInt(c.getColumnIndex(KEY_CID)));
+            personalInfo.setpImage(c.getBlob(17));
 
             c.close();
             return personalInfo;
@@ -391,53 +400,71 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //Add Academic Info
     public long addAcademicInfo(AcademicInfo ai) {
         SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(AI_KEY_CID, ai.getCid());
-        values.put(AI_KEY_GNAME, ai.getGname());
-        values.put(AI_KEY_GYEAR, ai.getGyear());
-        values.put(AI_KEY_GPERCENTAGE, ai.getGpercentage());
-        values.put(AI_KEY_SNAME, ai.getSname());
-        values.put(AI_KEY_SYEAR, ai.getSyear());
-        values.put(AI_KEY_SPERCENTAGE, ai.getSpercentage());
-        values.put(AI_KEY_CNAME, ai.getCname());
-        values.put(AI_KEY_CYEAR, ai.getCyear());
-        values.put(AI_KEY_CPERCENTAGE, ai.getCpercentage());
-
+        ContentValues cv = aiContentValues(ai);
         // Inserting Row
-        long n = db.insert(TABLE_ACADEMIC_INFO, null, values);
+        long n = db.insert(TABLE_ACADEMIC_INFO, null, cv);
         //db.close(); // Closing database connection
         return n;
     }
 
+    public ContentValues aiContentValues(AcademicInfo ai){
+        ContentValues values = new ContentValues();
+        values.put(AI_KEY_CID, ai.getCid());
+        values.put(AI_KEY_PGNAME, ai.getPgname());
+        values.put(AI_KEY_PGYEAR, ai.getPgyear());
+        values.put(AI_KEY_PGPERCENTAGE, ai.getPgpercentage());
+        values.put(AI_KEY_GNAME, ai.getGname());
+        values.put(AI_KEY_GYEAR, ai.getGyear());
+        values.put(AI_KEY_GPERCENTAGE, ai.getGpercentage());
+        values.put(AI_KEY_CNAME, ai.getCname());
+        values.put(AI_KEY_CYEAR, ai.getCyear());
+        values.put(AI_KEY_CPERCENTAGE, ai.getCpercentage());
+        values.put(AI_KEY_SNAME, ai.getSname());
+        values.put(AI_KEY_SYEAR, ai.getSyear());
+        values.put(AI_KEY_SPERCENTAGE, ai.getSpercentage());
+        return values;
+    }
+
     //Update Personal Info
-//    public long updateAcademicInfo(CareerObjective co) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(AI, pi.getpFullname());
-//        values.put(PI_KEY_PHONE, pi.getpPhoneNumber());
-//        values.put(PI_KEY_ALT_PHONE, pi.getpAltPhoneNumber());
-//        values.put(PI_KEY_EMAIL, pi.getpEmail());
-//        values.put(PI_KEY_ALT_EMAIL, pi.getpAltEmail());
-//        values.put(PI_KEY_HOUSE, pi.getpHouse());
-//        values.put(PI_KEY_STREET, pi.getpStreet());
-//        values.put(PI_KEY_ADDRESS, pi.getpAddress());
-//        values.put(PI_KEY_COUNTRY, pi.getpCountry());
-//        values.put(PI_KEY_CITY, pi.getpCity());
-//        values.put(PI_KEY_PINCODE, pi.getpPincode());
-//        values.put(PI_KEY_PAN, pi.getpPan());
-//        values.put(PI_KEY_PASSPORT, pi.getpPassport());
-//        values.put(PI_KEY_DOB, pi.getpDob());
-//        values.put(PI_KEY_GENDER, pi.getpGender());
-//        values.put(PI_KEY_MARITAL_STATUS, pi.getpMStatus());
-//        values.put(PI_KEY_PHOTO, pi.getpImage());
-//
-//        // Inserting Row
-//        long n = db.update(TABLE_PERSONAL_INFO, values, "cid=" + pi.getCid(), null);
-//        ;
-//        //db.close(); // Closing database connection
-//        return n;
-//    }
+    public long updateAcademicInfo(AcademicInfo ai) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = aiContentValues(ai);
+        // Inserting Row
+        long n = db.update(TABLE_PERSONAL_INFO, cv, "cid=" + ai.getCid(), null);
+
+        //db.close(); // Closing database connection
+        return n;
+    }
+
+    //getting single record of Academic info
+    public AcademicInfo getSingleAI(int cid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_ACADEMIC_INFO + " WHERE "
+                + AI_KEY_CID + " = " + cid;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        AcademicInfo academicInfo = new AcademicInfo();
+        if (c != null && c.moveToFirst()) {
+
+            academicInfo.setCid(c.getInt(c.getColumnIndex(AI_KEY_CID)));
+            academicInfo.setPgname(c.getString(c.getColumnIndex(AI_KEY_PGNAME)));
+            academicInfo.setPgyear(c.getString(c.getColumnIndex(AI_KEY_PGYEAR)));
+            academicInfo.setPgpercentage(c.getString(c.getColumnIndex(AI_KEY_PGPERCENTAGE)));
+            academicInfo.setGname(c.getString(c.getColumnIndex(AI_KEY_GNAME)));
+            academicInfo.setGyear(c.getString(c.getColumnIndex(AI_KEY_GYEAR)));
+            academicInfo.setGpercentage(c.getString(c.getColumnIndex(AI_KEY_GPERCENTAGE)));
+            academicInfo.setCname(c.getString(c.getColumnIndex(AI_KEY_CNAME)));
+            academicInfo.setCyear(c.getString(c.getColumnIndex(AI_KEY_CYEAR)));
+            academicInfo.setCpercentage(c.getString(c.getColumnIndex(AI_KEY_CPERCENTAGE)));
+            academicInfo.setSname(c.getString(c.getColumnIndex(AI_KEY_SNAME)));
+            academicInfo.setSyear(c.getString(c.getColumnIndex(AI_KEY_SYEAR)));
+            academicInfo.setSpercentage(c.getString(c.getColumnIndex(AI_KEY_SPERCENTAGE)));
+
+            c.close();
+            return academicInfo;
+        }
+        return null;
+    }
 
 }

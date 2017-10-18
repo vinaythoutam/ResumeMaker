@@ -21,7 +21,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.vinay.resumebuilder.AddProfilesActivity;
 import com.example.vinay.resumebuilder.DatabaseHandler;
 import com.example.vinay.resumebuilder.NavigationActivity;
 import com.example.vinay.resumebuilder.R;
@@ -38,13 +37,13 @@ public class PersonalInfoFragment extends Fragment {
     DatabaseHandler dbHandler;
     Context context;
     EditText name, phone, altPhone, email, altEmail, house, street, address, country, city, pincode, pan, passport, dob;
-    RadioButton gender, maritalStatus;
+    RadioButton gender, maritalStatus, maleRB, femaleRB, singleRB, marriedRB;
     RadioGroup genderGroup, maritalGroup;
     Button savePI, updatePI;
     ImageView pic;
     private static final int CAMERA_PIC_REQUEST = 0;
     private static final int RESULT_LOAD_IMAGE = 1;
-
+    View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,7 +52,7 @@ public class PersonalInfoFragment extends Fragment {
 
         context = getContext();
         dbHandler = new DatabaseHandler(context);
-        View rootView = inflater.inflate(R.layout.fragment_tab_personal_info, container, false);
+        rootView = inflater.inflate(R.layout.fragment_tab_personal_info, container, false);
 
         savePI = (Button) rootView.findViewById(R.id.saveBtn);
         updatePI = (Button) rootView.findViewById(R.id.updateBtn);
@@ -72,16 +71,15 @@ public class PersonalInfoFragment extends Fragment {
         pan = (EditText) rootView.findViewById(R.id.panEt);
         passport = (EditText) rootView.findViewById(R.id.passportEt);
         dob = (EditText) rootView.findViewById(R.id.dobEt);
+        maleRB = (RadioButton) rootView.findViewById(R.id.maleRB);
+        femaleRB = (RadioButton) rootView.findViewById(R.id.femaleRB);
+        singleRB = (RadioButton) rootView.findViewById(R.id.singleRB);
+        marriedRB = (RadioButton) rootView.findViewById(R.id.marriedRB);
+
 
         genderGroup = (RadioGroup) rootView.findViewById(R.id.genderRG);
-        int selectedId = genderGroup.getCheckedRadioButtonId();
-        gender = (RadioButton) rootView.findViewById(selectedId);
-
-        //Toast.makeText(context, ""+gender.getText().toString(), Toast.LENGTH_LONG).show();
 
         maritalGroup = (RadioGroup) rootView.findViewById(R.id.maritalRG);
-        int selectedId1 = maritalGroup.getCheckedRadioButtonId();
-        maritalStatus = (RadioButton) rootView.findViewById(selectedId1);
 
 
         pic = (ImageView) rootView.findViewById(R.id.picIV);
@@ -89,49 +87,74 @@ public class PersonalInfoFragment extends Fragment {
         int cid = NavigationActivity.cid;
         PersonalInfo personalInfo = dbHandler.getSinglePI(cid);
         //Toast.makeText(context, "hello"+personalInfo.getpGender()+personalInfo.getpMStatus(), Toast.LENGTH_LONG).show();
-       if (personalInfo!= null) {
+        if (personalInfo != null) {
 //            //do  nothing
-           //Toast.makeText(context, "Hi"+personalInfo.getpFullname(), Toast.LENGTH_SHORT).show();
-           name.setText(personalInfo.getpFullname());
-           phone.setText(personalInfo.getpPhoneNumber());
-           altPhone.setText(personalInfo.getpAltPhoneNumber());
-           email.setText(personalInfo.getpEmail());
-           altEmail.setText(personalInfo.getpAltEmail());
-           house.setText(personalInfo.getpHouse());
-           street.setText(personalInfo.getpStreet());
-           address.setText(personalInfo.getpAddress());
-           country.setText(personalInfo.getpCountry());
-           city.setText(personalInfo.getpCity());
-           pincode.setText(personalInfo.getpPincode());
-           dob.setText(personalInfo.getpDob());
-           pan.setText(personalInfo.getpPan());
-           passport.setText(personalInfo.getpPassport());
-           gender.setText(personalInfo.getpGender());
-           maritalStatus.setText(personalInfo.getpMStatus());
+            //Toast.makeText(context, "Hi"+personalInfo.getpFullname(), Toast.LENGTH_SHORT).show();
 
+            name.setText(personalInfo.getpFullname());
+            phone.setText(personalInfo.getpPhoneNumber());
+            altPhone.setText(personalInfo.getpAltPhoneNumber());
+            email.setText(personalInfo.getpEmail());
+            altEmail.setText(personalInfo.getpAltEmail());
+            house.setText(personalInfo.getpHouse());
+            street.setText(personalInfo.getpStreet());
+            address.setText(personalInfo.getpAddress());
+            country.setText(personalInfo.getpCountry());
+            city.setText(personalInfo.getpCity());
+            pincode.setText(personalInfo.getpPincode());
+            dob.setText(personalInfo.getpDob());
+            pan.setText(personalInfo.getpPan());
+            passport.setText(personalInfo.getpPassport());
 
-           savePI.setVisibility(View.GONE);
-           updatePI.setVisibility(View.VISIBLE);
-           updatePI.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
+            if (personalInfo.getpImage() != null) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(personalInfo.getpImage(), 0, personalInfo.getpImage().length);
+                pic.setImageBitmap(bitmap);
+            }
+            if (personalInfo.getpGender().equals("Male")) {
+                maleRB.setChecked(true);
+            } else {
+                femaleRB.setChecked(true);
+            }
 
-                   PersonalInfo personalInfo = modelPI();
-                   long n = dbHandler.updatePersonalInfo(personalInfo);
-                   //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
-                   if (n > 0) {
-                       Toast.makeText(context, "PI updated", Toast.LENGTH_SHORT).show();
+            if (personalInfo.getpMStatus().equals("Single")) {
+                singleRB.setChecked(true);
+            } else {
+                marriedRB.setChecked(true);
+            }
+            //Toast.makeText(context, ""+personalInfo.getpGender()+personalInfo.getpMStatus(), Toast.LENGTH_SHORT).show();
 
-                   } else {
-                       Toast.makeText(context, "Problem in updating", Toast.LENGTH_SHORT).show();
+            savePI.setVisibility(View.GONE);
+            updatePI.setVisibility(View.VISIBLE);
+            pic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                   }
+                    showCameraChooseDialog();
 
-               }
-           });
+                }
+            });
+            updatePI.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    PersonalInfo personalInfo = modelPI();
+                    long n = dbHandler.updatePersonalInfo(personalInfo);
+                    //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
+                    if (n > 0) {
+                        Toast.makeText(context, "PI updated", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(context, "Problem in updating", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                }
+            });
 
         } else {
 
+            savePI.setVisibility(View.VISIBLE);
+            updatePI.setVisibility(View.GONE);
             pic.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -157,25 +180,6 @@ public class PersonalInfoFragment extends Fragment {
                         Toast.makeText(context, "Problem in adding", Toast.LENGTH_SHORT).show();
 
                     }
-
-
-                }
-            });
-            updatePI.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    PersonalInfo personalInfo = modelPI();
-                    long n = dbHandler.updatePersonalInfo(personalInfo);
-                    //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
-                    if (n > 0) {
-                        Toast.makeText(context, "PI updated", Toast.LENGTH_SHORT).show();
-
-                    } else {
-                        Toast.makeText(context, "Problem in updating", Toast.LENGTH_SHORT).show();
-
-                    }
-
                 }
             });
 
@@ -184,6 +188,12 @@ public class PersonalInfoFragment extends Fragment {
     }
 
     public PersonalInfo modelPI() {
+        int selectedId = genderGroup.getCheckedRadioButtonId();
+        gender = (RadioButton) rootView.findViewById(selectedId);
+
+        int selectedId1 = maritalGroup.getCheckedRadioButtonId();
+        maritalStatus = (RadioButton) rootView.findViewById(selectedId1);
+
         PersonalInfo personalInfo = new PersonalInfo();
         personalInfo.setpFullname(name.getText().toString());
         personalInfo.setpPhoneNumber(phone.getText().toString());
@@ -199,19 +209,20 @@ public class PersonalInfoFragment extends Fragment {
         personalInfo.setpPan(pan.getText().toString());
         personalInfo.setpPassport(passport.getText().toString());
         personalInfo.setpDob(dob.getText().toString());
-       // personalInfo.setpGender(gender.getText().toString());
-        // personalInfo.setpMStatus(maritalStatus.getText().toString());
+        personalInfo.setpGender(gender.getText().toString());
+        personalInfo.setpMStatus(maritalStatus.getText().toString());
         personalInfo.setCid(NavigationActivity.cid);
 
         //convert image to byte[]
         Bitmap bitmap = ((BitmapDrawable) pic.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] imageInByte = baos.toByteArray();
 
         personalInfo.setpImage(imageInByte);
         return personalInfo;
     }
+
 
     public void showCameraChooseDialog() {
         final Button cam, gall;

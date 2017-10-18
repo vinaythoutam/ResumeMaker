@@ -3,10 +3,9 @@
     package="com.example.vinay.resumebuilder">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--<uses-permission android:name="android.permission.CAMERA"> </uses-permission>-->
+    <!-- <uses-permission android:name="android.permission.CAMERA"> </uses-permission> -->
 
-    <uses-feature android:name="android.hardware.camera"></uses-feature>
-
+    <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
@@ -25,8 +24,9 @@
             android:name=".RegisterActivity"
             android:theme="@style/Translucent" />
         <activity android:name=".LoginSuccessActivity" />
-        <activity android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation"
@@ -36,7 +36,12 @@
         <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".NavActivityProfile"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

@@ -27,7 +27,8 @@ public class ListViewAdapter extends BaseAdapter
     String dates[];
     String types[];
     int ids[];
-    public ListViewAdapter(Activity context, String[] names, String[] dates, String types[],int ids[]) {
+    String uDates[];
+    public ListViewAdapter(Activity context, String[] names, String[] dates, String types[], int ids[], String[] uDates) {
 
         super();
         this.context = context;
@@ -35,6 +36,7 @@ public class ListViewAdapter extends BaseAdapter
         this.dates = dates;
         this.types= types;
         this.ids=ids;
+        this.uDates=uDates;
         dbHandler= new DatabaseHandler(context);
 
 
@@ -60,6 +62,7 @@ public class ListViewAdapter extends BaseAdapter
         TextView pDate;
         TextView pType;
         ImageView del;
+        TextView pUdate;
 
     }
 
@@ -77,6 +80,7 @@ public class ListViewAdapter extends BaseAdapter
             holder.pName = (TextView) convertView.findViewById(R.id.cvName);
             holder.pDate = (TextView) convertView.findViewById(R.id.cvCreatedOn);
             holder.pType = (TextView) convertView.findViewById(R.id.cvType);
+            holder.pUdate=(TextView) convertView.findViewById(R.id.cvUpdatedOn);
 
             convertView.setTag(holder);
         }
@@ -88,6 +92,7 @@ public class ListViewAdapter extends BaseAdapter
         holder.pName.setText(names[position]);
         holder.pDate.setText(dates[position]);
         holder.pType.setText(types[position]);
+        holder.pUdate.setText(uDates[position]);
 
         holder.del = (ImageView) convertView.findViewById(R.id.delCard);
         holder.del.setOnClickListener(new View.OnClickListener() {

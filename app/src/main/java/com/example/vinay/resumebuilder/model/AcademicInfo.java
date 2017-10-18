@@ -5,8 +5,20 @@ package com.example.vinay.resumebuilder.model;
  */
 
 public class AcademicInfo {
-    String gname, gyear, gpercentage, sname, syear, spercentage, cname, cyear, cpercentage;
+    String pgname, pgyear, pgpercentage,gname, gyear, gpercentage, sname, syear, spercentage, cname, cyear, cpercentage;
     int cid;
+
+    public String getPgname() {
+        return pgname;
+    }
+
+    public String getPgyear() {
+        return pgyear;
+    }
+
+    public String getPgpercentage() {
+        return pgpercentage;
+    }
 
     public String getGname() {
         return gname;
@@ -48,6 +60,18 @@ public class AcademicInfo {
         return cid;
     }
 
+
+    public void setPgname(String pgname) {
+        this.pgname = pgname;
+    }
+
+    public void setPgyear(String pgyear) {
+        this.pgyear = pgyear;
+    }
+
+    public void setPgpercentage(String pgpercentage) {
+        this.pgpercentage = pgpercentage;
+    }
 
     public void setGname(String gname) {
         this.gname = gname;

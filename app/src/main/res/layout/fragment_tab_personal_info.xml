@@ -192,12 +192,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
     <RadioGroup
         android:id="@+id/genderRG"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/maleRB"
@@ -222,9 +222,9 @@
 
     <RadioGroup
         android:id="@+id/maritalRG"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/singleRB"

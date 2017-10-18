@@ -16,6 +16,7 @@ import com.example.vinay.resumebuilder.DatabaseHandler;
 import com.example.vinay.resumebuilder.NavigationActivity;
 import com.example.vinay.resumebuilder.R;
 import com.example.vinay.resumebuilder.model.AcademicInfo;
+import com.example.vinay.resumebuilder.model.CareerObjective;
 import com.example.vinay.resumebuilder.model.PersonalInfo;
 
 import java.util.Calendar;
@@ -26,7 +27,7 @@ public class AcademicInfoFragment extends Fragment {
 
     Context context;
     DatabaseHandler dbHandler;
-    EditText gName, gYear, gPercentage, sName, sYear, sPercentage, cName, cYear, cPercentage;
+    EditText pgName, pgYear, pgPercentage, gName, gYear, gPercentage, sName, sYear, sPercentage, cName, cYear, cPercentage;
     Button aiSave, aiUpdate;
 
     @Override
@@ -37,66 +38,95 @@ public class AcademicInfoFragment extends Fragment {
 
 
         context = getContext();
-        dbHandler= new DatabaseHandler(context);
-        gName = (EditText) rootView.findViewById(R.id.schoolYearET);
-        gYear = (EditText) rootView.findViewById(R.id.schoolYearET);
-        gPercentage = (EditText) rootView.findViewById(R.id.schoolYearET);
-        sName = (EditText) rootView.findViewById(R.id.schoolYearET);
+        dbHandler = new DatabaseHandler(context);
+
+        pgName = (EditText) rootView.findViewById(R.id.pgNameET);
+        pgYear = (EditText) rootView.findViewById(R.id.pgYearET);
+        pgPercentage = (EditText) rootView.findViewById(R.id.pgPercentageET);
+        gName = (EditText) rootView.findViewById(R.id.gradNameET);
+        gYear = (EditText) rootView.findViewById(R.id.gradYearET);
+        gPercentage = (EditText) rootView.findViewById(R.id.gradPercentageET);
+        sName = (EditText) rootView.findViewById(R.id.schoolNameET);
         sYear = (EditText) rootView.findViewById(R.id.schoolYearET);
-        sPercentage = (EditText) rootView.findViewById(R.id.schoolYearET);
-        cName = (EditText) rootView.findViewById(R.id.schoolYearET);
-        cYear = (EditText) rootView.findViewById(R.id.schoolYearET);
-        cPercentage = (EditText) rootView.findViewById(R.id.schoolYearET);
-        aiSave=(Button) rootView.findViewById(R.id.aiSaveBtn);
-        aiUpdate=(Button) rootView.findViewById(R.id.aiUpdateBtn);
+        sPercentage = (EditText) rootView.findViewById(R.id.percentageSclET);
+        cName = (EditText) rootView.findViewById(R.id.collgeNameET);
+        cYear = (EditText) rootView.findViewById(R.id.collegeYearET);
+        cPercentage = (EditText) rootView.findViewById(R.id.percentageColET);
+
+        aiSave = (Button) rootView.findViewById(R.id.aiSaveBtn);
+        aiUpdate = (Button) rootView.findViewById(R.id.aiUpdateBtn);
 
 
-        aiSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        int cid = NavigationActivity.cid;
+        AcademicInfo academicInfo = dbHandler.getSingleAI(cid);
+        if (academicInfo != null) {
+            pgName.setText(academicInfo.getPgname());
+            pgYear.setText(academicInfo.getPgyear());
+            pgPercentage.setText(academicInfo.getPgpercentage());
+            gName.setText(academicInfo.getPgname());
+            gYear.setText(academicInfo.getPgyear());
+            gPercentage.setText(academicInfo.getPgpercentage());
+            cName.setText(academicInfo.getPgname());
+            cYear.setText(academicInfo.getPgyear());
+            cPercentage.setText(academicInfo.getPgpercentage());
+            sName.setText(academicInfo.getPgname());
+            sYear.setText(academicInfo.getPgyear());
+            sPercentage.setText(academicInfo.getPgpercentage());
 
-                AcademicInfo academicInfo = modelAI();
-                long n = dbHandler.addAcademicInfo(academicInfo);
-                //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
-                if (n > 0)
-                {
-                    Toast.makeText(context, "AI saved", Toast.LENGTH_SHORT).show();
-                    aiSave.setVisibility(View.GONE);
-                    aiUpdate.setVisibility(View.VISIBLE);
+            aiSave.setVisibility(View.GONE);
+            aiUpdate.setVisibility(View.VISIBLE);
+            aiUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                } else {
-                    Toast.makeText(context, "Problem in adding", Toast.LENGTH_SHORT).show();
+                    AcademicInfo academicInfo = modelAI();
+                    long n = dbHandler.updateAcademicInfo(academicInfo);
+                    //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
+                    if (n > 0) {
+                        Toast.makeText(context, "AI updated", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(context, "Problem in updating", Toast.LENGTH_SHORT).show();
+
+                    }
 
                 }
+            });
 
-            }
-        });
-        aiUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        } else {
+            aiSave.setVisibility(View.VISIBLE);
+            aiUpdate.setVisibility(View.GONE);
+            aiSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                AcademicInfo academicInfo = modelAI();
-                //long n = dbHandler.updateAcademicInfo(academicInfo);
-                //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
-                if (1 > 0) {
-                    Toast.makeText(context, "AI updated", Toast.LENGTH_SHORT).show();
+                    AcademicInfo academicInfo = modelAI();
+                    long n = dbHandler.addAcademicInfo(academicInfo);
+                    //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
+                    if (n > 0) {
+                        Toast.makeText(context, "AI saved", Toast.LENGTH_SHORT).show();
+                        aiSave.setVisibility(View.GONE);
+                        aiUpdate.setVisibility(View.VISIBLE);
 
-                } else {
-                    Toast.makeText(context, "Problem in updating", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Problem in adding", Toast.LENGTH_SHORT).show();
+
+                    }
 
                 }
-
-            }
-        });
+            });
+        }
 
         return rootView;
     }
 
-    public AcademicInfo modelAI()
-    {
-        AcademicInfo academicInfo= new AcademicInfo();
+    public AcademicInfo modelAI() {
+        AcademicInfo academicInfo = new AcademicInfo();
 
         academicInfo.setCid(NavigationActivity.cid);
+        academicInfo.setPgname(pgName.getText().toString());
+        academicInfo.setPgyear(pgYear.getText().toString());
+        academicInfo.setPgpercentage(pgPercentage.getText().toString());
         academicInfo.setGname(gName.getText().toString());
         academicInfo.setGyear(gYear.getText().toString());
         academicInfo.setGpercentage(gPercentage.getText().toString());
