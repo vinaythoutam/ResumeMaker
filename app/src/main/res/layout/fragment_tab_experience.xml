@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<TextView
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ex_list">
+    </ListView>
+
+    <android.support.design.widget.FloatingActionButton
+    android:id="@+id/ex_fab"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="four"/>
-</LinearLayout>
+    android:layout_gravity="center_horizontal|bottom"
+    android:layout_margin="8dp"
+    android:elevation="@dimen/_5sdp"
+    app:borderWidth="0dp"
+    app:fabSize="normal"
+    android:src="@drawable/plus"
+    />
+
+
+</android.support.design.widget.CoordinatorLayout>

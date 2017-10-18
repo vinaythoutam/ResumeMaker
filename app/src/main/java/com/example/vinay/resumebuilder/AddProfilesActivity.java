@@ -71,7 +71,6 @@ public class AddProfilesActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "hi"+d.getCname(), Toast.LENGTH_SHORT).show();
                 i++;
             }
-            lv = (ListView) findViewById(R.id.lvCards);
             lviewAdapter = new ListViewAdapter(this, names, dates, types,ids,uDates);
 
             lv.setAdapter(lviewAdapter);

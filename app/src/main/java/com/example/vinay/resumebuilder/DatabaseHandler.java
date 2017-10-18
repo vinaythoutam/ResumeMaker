@@ -5,12 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
+
 
 import com.example.vinay.resumebuilder.model.AcademicInfo;
 import com.example.vinay.resumebuilder.model.CardDetails;
 import com.example.vinay.resumebuilder.model.CareerObjective;
 import com.example.vinay.resumebuilder.model.PersonalInfo;
+import com.example.vinay.resumebuilder.model.WorkExperience;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,15 +24,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 27;
+    private static final int DATABASE_VERSION = 50;
 
     // Database Name
     private static final String DATABASE_NAME = "resumebuilder";
 
-    // profile table name
+    // Tables names
     private static final String TABLE_PROFILE_NAMES = "profiles";
     private static final String TABLE_PERSONAL_INFO = "personal_info";
     private static final String TABLE_CAREER_OBJ = "career_obj";
+    private static final String TABLE_WORK_EXPERIENCE = "work_experience";
     private static final String TABLE_ACADEMIC_INFO = "academic_info";
 
 
@@ -68,6 +70,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String CO_KEY_ID = "pid";
     private static final String CO_KEY_CID = "cid";
     private static final String CO_KEY_CO = "careeobj";
+
+    //Experience Table Columns names
+    private static final String EX_KEY_ID = "pid";
+    private static final String EX_JOBTITLE = "exJobtitle";
+    private static final String EX_JOBDESCRIPTION ="exJobdescription";
+    private static final String EX_COMPANYNAME = "exCompanyname";
+    private static final String EX_STARTDATE = "exStartdate";
+    private static final String EX_ENDDATE = "exEnddate";
 
     // academic info Table Columns names
     private static final String AI_KEY_ID = "pid";
@@ -120,11 +130,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + AI_KEY_CNAME + " TEXT, "  + AI_KEY_CYEAR + " TEXT, " + AI_KEY_CPERCENTAGE + " TEXT, "
                 + AI_KEY_SNAME + " TEXT, "  + AI_KEY_SYEAR + " TEXT, " + AI_KEY_SPERCENTAGE + " TEXT "
                 + ")";
+        String CREATE_WORK_EX_TABLE = "CREATE TABLE " + TABLE_WORK_EXPERIENCE + "("
+                + EX_KEY_ID + " INTEGER PRIMARY KEY, " + EX_JOBTITLE + " TEXT, " + EX_JOBDESCRIPTION + " TEXT," + EX_COMPANYNAME
+                + " TEXT, " + EX_STARTDATE + " TEXT, " + EX_ENDDATE+ " TEXT " + ")" ;
 
         db.execSQL(CREATE_PROFILE_TABLE);
         db.execSQL(CREATE_PINFO_TABLE);
         db.execSQL(CREATE_CO_TABLE);
         db.execSQL(CREATE_AI_TABLE);
+        db.execSQL(CREATE_WORK_EX_TABLE);
 
     }
 
@@ -138,6 +152,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PERSONAL_INFO);
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CAREER_OBJ);
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_WORK_EXPERIENCE);
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACADEMIC_INFO);
 
@@ -360,6 +376,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         long n = db.insert(TABLE_CAREER_OBJ, null, values);
         //db.close(); // Closing database connection
         return n;
+    }
+    //Adding Work Experience
+    public long addWorkExperience(WorkExperience we){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(EX_JOBTITLE, we.getexJobtitle());
+        values.put(EX_JOBDESCRIPTION, we.getexJobdescription());
+        values.put(EX_COMPANYNAME, we.getexCompanyname());
+        values.put(EX_STARTDATE, we.getexStartdate());
+        values.put(EX_ENDDATE, we.getexEnddate());
+        long n = db.insert(TABLE_WORK_EXPERIENCE, null, values);
+        return n;
+
     }
 
     //Update Career Objective
