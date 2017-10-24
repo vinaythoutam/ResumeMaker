@@ -62,8 +62,6 @@ public class NavActivityProfile extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        //add profiles <code></code>
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
             Explode explode = new Explode();
@@ -71,7 +69,7 @@ public class NavActivityProfile extends AppCompatActivity
             getWindow().setExitTransition(explode);
             getWindow().setEnterTransition(explode);
         }
-
+        //add profiles <code></code>
         lv = (ListView) findViewById(R.id.lvCards);
         dbHandler = new DatabaseHandler(this);
 

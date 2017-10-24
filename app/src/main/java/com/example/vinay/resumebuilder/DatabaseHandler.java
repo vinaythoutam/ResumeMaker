@@ -73,6 +73,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //Experience Table Columns names
     private static final String EX_KEY_ID = "pid";
+    private static final String EX_CID = "cid";
     private static final String EX_JOBTITLE = "exJobtitle";
     private static final String EX_JOBDESCRIPTION ="exJobdescription";
     private static final String EX_COMPANYNAME = "exCompanyname";
@@ -131,7 +132,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + AI_KEY_SNAME + " TEXT, "  + AI_KEY_SYEAR + " TEXT, " + AI_KEY_SPERCENTAGE + " TEXT "
                 + ")";
         String CREATE_WORK_EX_TABLE = "CREATE TABLE " + TABLE_WORK_EXPERIENCE + "("
-                + EX_KEY_ID + " INTEGER PRIMARY KEY, " + EX_JOBTITLE + " TEXT, " + EX_JOBDESCRIPTION + " TEXT," + EX_COMPANYNAME
+                + EX_KEY_ID + " INTEGER PRIMARY KEY, " + EX_CID + " INTEGER, "+ EX_JOBTITLE + " TEXT, " + EX_JOBDESCRIPTION + " TEXT," + EX_COMPANYNAME
                 + " TEXT, " + EX_STARTDATE + " TEXT, " + EX_ENDDATE+ " TEXT " + ")" ;
 
         db.execSQL(CREATE_PROFILE_TABLE);
@@ -381,6 +382,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public long addWorkExperience(WorkExperience we){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(EX_CID, we.getexCid());
         values.put(EX_JOBTITLE, we.getexJobtitle());
         values.put(EX_JOBDESCRIPTION, we.getexJobdescription());
         values.put(EX_COMPANYNAME, we.getexCompanyname());
@@ -390,6 +392,64 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return n;
 
     }
+    public long updateExperience(WorkExperience we) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(EX_CID, we.getexCid());
+        values.put(EX_JOBTITLE, we.getexJobtitle());
+        values.put(EX_JOBDESCRIPTION, we.getexJobdescription());
+        values.put(EX_COMPANYNAME, we.getexCompanyname());
+        values.put(EX_STARTDATE, we.getexStartdate());
+        values.put(EX_ENDDATE, we.getexEnddate());
+
+
+        // Updating Row
+        long n = db.update(TABLE_WORK_EXPERIENCE, values, "cid=" + we.getexCid(), null);
+        //db.close(); // Closing database connection
+        return n;
+    }
+    // Getting All Experience details
+    public List<WorkExperience> getAllExperienceDetails() {
+        List<WorkExperience> workExperienceList = new ArrayList<WorkExperience>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //for reverse order
+        //Cursor cursor = db.rawQuery("select * from " + TABLE_PROFILE_NAMES + " order by cid desc", null);
+
+        Cursor cursor = db.rawQuery("select * from " + TABLE_WORK_EXPERIENCE, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                WorkExperience workExperience = new WorkExperience();
+                workExperience.setexCid(Integer.parseInt(cursor.getString(0)));
+                workExperience.setexJobtitle(cursor.getString(1));
+                workExperience.setexJobdescription(cursor.getString(2));
+                workExperience.setexCompanyname(cursor.getString(3));
+                workExperience.setexStartdate(cursor.getString(4));
+                workExperience.setexEnddate(cursor.getString(5));
+                // Adding profiles to list
+                workExperienceList.add(workExperience);
+            } while (cursor.moveToNext());
+        }
+
+        // return profile list
+        return workExperienceList;
+    }
+
+    // delete a WorkExperience from list
+    boolean deleteWorkExperience(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //Cursor cursor = db.rawQuery(" delete from " + TABLE_PROFILE_NAMES + " where " + KEY_CID + " = " + id, null);
+
+        boolean n = db.delete(TABLE_WORK_EXPERIENCE, KEY_CID + " = " + id, null) > 0;
+        db.close();
+        return n;
+    }
+
+
 
     //Update Career Objective
     public long updateCO(CareerObjective co) {
@@ -401,7 +461,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // Inserting Row
         long n = db.update(TABLE_CAREER_OBJ, values, "cid=" + co.getCid(), null);
-        ;
         //db.close(); // Closing database connection
         return n;
     }

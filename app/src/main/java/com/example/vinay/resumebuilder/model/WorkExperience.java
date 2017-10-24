@@ -5,8 +5,18 @@ package com.example.vinay.resumebuilder.model;
  */
 
 public class WorkExperience {
+
     String exStartdate,exEnddate;
+    int exCid;
     String exJobtitle,exJobdescription,exCompanyname;
+
+    public int getexCid() {
+        return exCid;
+    }
+
+    public void setexCid(int exCid) {
+        this.exCid = exCid;
+    }
 
     public String getexStartdate() {
         return exStartdate;

@@ -1,5 +1,6 @@
 package com.example.vinay.resumebuilder.fragments;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -18,33 +19,71 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.vinay.resumebuilder.AddProfilesActivity;
 import com.example.vinay.resumebuilder.DatabaseHandler;
+import com.example.vinay.resumebuilder.Ex_ListViewAdapter;
+import com.example.vinay.resumebuilder.NavigationActivity;
 import com.example.vinay.resumebuilder.R;
 import com.example.vinay.resumebuilder.model.CardDetails;
 import com.example.vinay.resumebuilder.model.WorkExperience;
 
 import java.util.Calendar;
+import java.util.List;
 
 
 public  class ExperienceFragment extends Fragment {
                 //extends DialogFragment implements DatePickerDialog.DatePickerlistener {
-        Context context;
     FloatingActionButton ex_fab;
     DatabaseHandler dbhandler;
+    Activity context;
+    String JobTitle[] = null;
+    String JobDescrition[]= null;
+    String CompanyName[]= null;
+    String Workfrom[]= null;
+    String Workto[]= null;
+    int ids[]= null;
+    Ex_ListViewAdapter ex_listViewAdapter;
+    ListView lv;
 //    CheckBox ex_cb;
 //    EditText ex_et4,ex_et5;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        context = getContext();
-        dbhandler = new DatabaseHandler(context);
 
+        dbhandler = new DatabaseHandler(context);
         View rootView = inflater.inflate(R.layout.fragment_tab_experience, container, false);
+        lv = (ListView)rootView.findViewById(R.id.ex_list);
+        List<WorkExperience> cd = dbhandler.getAllExperienceDetails();
+        if (cd.size() > 0) {
+            JobTitle = new String[cd.size()];
+            CompanyName = new String[cd.size()];
+            ids   = new int[cd.size()];
+            Workfrom = new String[cd.size()];
+            Workto = new String[cd.size()];
+
+            int i = 0;
+            for(WorkExperience we : cd){
+                JobTitle[i] = we.getexJobtitle();
+                CompanyName[i] = we.getexCompanyname();
+                Workfrom[i] = we.getexStartdate();
+                Workto[i] = we.getexEnddate();
+                ids[i] = we.getexCid();
+                i++;
+            }
+
+            ex_listViewAdapter = new Ex_ListViewAdapter(context, JobTitle,CompanyName,Workfrom,Workto,ids);
+            lv.setAdapter(ex_listViewAdapter);
+        }
+        else{
+            Toast.makeText(context, "No Data Found", Toast.LENGTH_SHORT).show();
+        }
+
+
         ex_fab = (FloatingActionButton) rootView.findViewById(R.id.ex_fab);
         ex_fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,25 +113,26 @@ public  class ExperienceFragment extends Fragment {
         final String CompanyName = ex_et3.getText().toString();
         final String StartDate = ex_et4.getText().toString();
         final String EndDate = ex_et5.getText().toString();
+        final int exCid = NavigationActivity.cid;
 
 
         dialogBuilder.setTitle("Enter Company Details");
-//        ex_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked = true) {
-//                    ex_et5.setEnabled(false);
-//                } else {
-//                    ex_et5.setEnabled(true);
-//                }
-//            }
-//        });
+        ex_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked = true) {
+                    ex_et5.setEnabled(false);
+                } else {
+                    ex_et5.setEnabled(true);
+                }
+            }
+        });
 
         dialogBuilder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int whichButton) {
-                Toast.makeText(context, "working", Toast.LENGTH_SHORT).show();
                 WorkExperience workExperience = new WorkExperience();
+                workExperience.setexCid(exCid);
                 workExperience.setexJobtitle(JobTitle);
                 workExperience.setexJobdescription(JobDescription);
                 workExperience.setexCompanyname(CompanyName);
