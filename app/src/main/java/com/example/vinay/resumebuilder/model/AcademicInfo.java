@@ -5,7 +5,7 @@ package com.example.vinay.resumebuilder.model;
  */
 
 public class AcademicInfo {
-    String pgname, pgyear, pgpercentage,gname, gyear, gpercentage, sname, syear, spercentage, cname, cyear, cpercentage;
+    String pgnotyet,pguniversity,pgname, pgyear,pgpersuing, pgpercentage,guniversity,gname, gyear,gpersuing, gpercentage, sboard,sname, syear, spercentage,cboard,cname, cyear, cpercentage;
     int cid;
 
     public String getPgname() {
@@ -60,6 +60,32 @@ public class AcademicInfo {
         return cid;
     }
 
+    public String getPguniversity() {
+        return pguniversity;
+    }
+
+    public String getPgpersuing() {
+        return pgpersuing;
+    }
+
+    public String getGuniversity() {
+        return guniversity;
+    }
+
+    public String getGpersuing() {
+        return gpersuing;
+    }
+
+    public String getSboard() {
+        return sboard;
+    }
+
+    public String getCboard() {
+        return cboard;
+    }
+
+
+
 
     public void setPgname(String pgname) {
         this.pgname = pgname;
@@ -111,5 +137,38 @@ public class AcademicInfo {
 
     public void setCid(int cid) {
         this.cid = cid;
+    }
+
+    public void setPguniversity(String pguniversity) {
+        this.pguniversity = pguniversity;
+    }
+
+    public void setPgpersuing(String pgpersuing) {
+        this.pgpersuing = pgpersuing;
+    }
+
+    public void setGuniversity(String guniversity) {
+        this.guniversity = guniversity;
+    }
+
+    public void setGpersuing(String gpersuing) {
+        this.gpersuing = gpersuing;
+    }
+
+    public void setSboard(String sboard) {
+        this.sboard = sboard;
+    }
+
+    public void setCboard(String cboard) {
+        this.cboard = cboard;
+    }
+
+
+    public String getPgnotyet() {
+        return pgnotyet;
+    }
+
+    public void setPgnotyet(String pgnotyet) {
+        this.pgnotyet = pgnotyet;
     }
 }

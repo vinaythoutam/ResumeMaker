@@ -22,11 +22,13 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.vinay.resumebuilder.DatabaseHandler;
+import com.example.vinay.resumebuilder.NavActivityProfile;
 import com.example.vinay.resumebuilder.NavigationActivity;
 import com.example.vinay.resumebuilder.R;
 import com.example.vinay.resumebuilder.model.PersonalInfo;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -253,11 +255,10 @@ public class PersonalInfoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 b.dismiss();
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);//
+                startActivityForResult(Intent.createChooser(intent, "Select File"),RESULT_LOAD_IMAGE);
             }
         });
     }
@@ -275,22 +276,20 @@ public class PersonalInfoFragment extends Fragment {
                 super.onActivityResult(requestCode, resultCode, data);
 
                 if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    Bitmap bm=null;
+                        try {
+                            bm = MediaStore.Images.Media.getBitmap(context.getContentResolver(), data.getData());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
-                    Cursor cursor = getActivity().getContentResolver().query(selectedImage,
-                            filePathColumn, null, null, null);
-                    cursor.moveToFirst();
-
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String picturePath = cursor.getString(columnIndex);
-                    cursor.close();
-                    pic.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                    pic.setImageBitmap(bm);
 
                 }
                 break;
         }
 
     }
+
 }
 

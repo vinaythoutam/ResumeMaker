@@ -16,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -85,7 +86,7 @@ public class NavigationActivity extends AppCompatActivity
         tabLayout.addTab(tabLayout.newTab().setText("Acheivements"));
         tabLayout.addTab(tabLayout.newTab().setText("Stregnths&Hobbies"));
         tabLayout.addTab(tabLayout.newTab().setText("Skills"));
-        tabLayout.addTab(tabLayout.newTab().setText("CareerObjective"));
+        tabLayout.addTab(tabLayout.newTab().setText("Declaration"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.container);
@@ -170,14 +171,23 @@ public class NavigationActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Intent intent = new Intent(getApplicationContext(), NavActivityProfile.class);
-        finish();
-        overridePendingTransition( 0, 0);
-        startActivity(intent);
-        overridePendingTransition( 0, 0);
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        Intent intent = new Intent(getApplicationContext(), NavActivityProfile.class);
+//        finish();
+//        overridePendingTransition( 0, 0);
+//        startActivity(intent);
+//        overridePendingTransition( 0, 0);
+//
+//    }
 
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent i = new Intent(getApplicationContext(), NavActivityProfile.class);
+            startActivity(i);
+            finish();
+        }
+        return false;
     }
 }

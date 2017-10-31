@@ -6,7 +6,7 @@ package com.example.vinay.resumebuilder.model;
 
 public class WorkExperience {
 
-    String exStartdate,exEnddate;
+    String exStartdate,exEnddate,exStlworking;
     int exCid;
     String exJobtitle,exJobdescription,exCompanyname;
 
@@ -56,5 +56,13 @@ public class WorkExperience {
 
     public void setexCompanyname(String exCompanyname) {
         this.exCompanyname = exCompanyname;
+    }
+
+    public String getExStlworking() {
+        return exStlworking;
+    }
+
+    public void setExStlworking(String exStlworking) {
+        this.exStlworking = exStlworking;
     }
 }

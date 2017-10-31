@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -10,7 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Job Title"
-            android:id="@+id/ex_et1"
+            android:id="@+id/jobTitleET"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginLeft="@dimen/_5sdp"/>
     </android.support.design.widget.TextInputLayout>
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" 
             android:hint="Job Description"
-            android:id="@+id/ex_et2"
+            android:id="@+id/jobDescET"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginLeft="@dimen/_5sdp"/>
     </android.support.design.widget.TextInputLayout>
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" 
             android:hint="Company Name"
-            android:id="@+id/ex_et3"
+            android:id="@+id/compNameET"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginLeft="@dimen/_5sdp"/>
     </android.support.design.widget.TextInputLayout>
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Still working?"
-        android:id="@+id/ex_cb"
+        android:id="@+id/stlWrkCB"
         android:layout_marginRight="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_5sdp"/>
     <LinearLayout
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Work from"
-            android:id="@+id/ex_et4"
+            android:id="@+id/wrkFromET"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginLeft="@dimen/_5sdp"/>
     </android.support.design.widget.TextInputLayout>
@@ -67,7 +67,7 @@
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:hint="Work to"
-             android:id="@+id/ex_et5"
+             android:id="@+id/wrkToET"
              android:layout_marginLeft="@dimen/_5sdp"/>
 
      </android.support.design.widget.TextInputLayout>

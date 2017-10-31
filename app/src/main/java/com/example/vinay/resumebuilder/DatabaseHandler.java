@@ -5,11 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 
 import com.example.vinay.resumebuilder.model.AcademicInfo;
 import com.example.vinay.resumebuilder.model.CardDetails;
 import com.example.vinay.resumebuilder.model.CareerObjective;
+import com.example.vinay.resumebuilder.model.Declaration;
 import com.example.vinay.resumebuilder.model.PersonalInfo;
 import com.example.vinay.resumebuilder.model.WorkExperience;
 
@@ -19,12 +21,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static java.security.AccessController.getContext;
+
 public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 50;
+    private static final int DATABASE_VERSION = 60;
 
     // Database Name
     private static final String DATABASE_NAME = "resumebuilder";
@@ -35,6 +39,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_CAREER_OBJ = "career_obj";
     private static final String TABLE_WORK_EXPERIENCE = "work_experience";
     private static final String TABLE_ACADEMIC_INFO = "academic_info";
+    private static final String TABLE_DECLARATION = "declaration";
 
 
     // profile Table Columns names
@@ -79,22 +84,37 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String EX_COMPANYNAME = "exCompanyname";
     private static final String EX_STARTDATE = "exStartdate";
     private static final String EX_ENDDATE = "exEnddate";
+    private static final String EX_STILLWORKING = "exStlWrk";
 
     // academic info Table Columns names
     private static final String AI_KEY_ID = "pid";
     private static final String AI_KEY_CID = "cid";
+    private static final String AI_KEY_PGUNIVERSITY = "pguniversity";
     private static final String AI_KEY_PGNAME = "pgname";
     private static final String AI_KEY_PGYEAR = "pgyear";
+    private static final String AI_KEY_PGPERSUING = "pgpersuing";
     private static final String AI_KEY_PGPERCENTAGE = "pgpercentage";
+    private static final String AI_KEY_GUNIVERSITY = "guniversity";
     private static final String AI_KEY_GNAME = "gname";
     private static final String AI_KEY_GYEAR = "gyear";
+    private static final String AI_KEY_GPERSUING = "gpersuing";
     private static final String AI_KEY_GPERCENTAGE = "gpercentage";
+    private static final String AI_KEY_CBOARD = "cboard";
     private static final String AI_KEY_CNAME = "cname";
     private static final String AI_KEY_CYEAR = "cyear";
     private static final String AI_KEY_CPERCENTAGE = "cpercentage";
+    private static final String AI_KEY_SBOARD = "sboard";
     private static final String AI_KEY_SNAME = "sname";
     private static final String AI_KEY_SYEAR = "syear";
     private static final String AI_KEY_SPERCENTAGE = "spercentage";
+    private static final String AI_KEY_PGNYET = "pgnotyet";
+
+    // Declaration Table Columns names
+    private static final String DC_KEY_ID = "pid";
+    private static final String DC_KEY_CID = "cid";
+    private static final String DC_KEY_DECLARATION = "ddeclaration";
+    private static final String DC_KEY_DATE = "ddate";
+    private static final String DC_KEY_PLACE = "dplace";
 
 
     public DatabaseHandler(Context context) {
@@ -126,20 +146,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_AI_TABLE = "CREATE TABLE " + TABLE_ACADEMIC_INFO + "("
                 + AI_KEY_ID + " INTEGER PRIMARY KEY, " + AI_KEY_CID + " INTEGER,"
-                + AI_KEY_PGNAME + " TEXT, "  + AI_KEY_PGYEAR + " TEXT, " + AI_KEY_PGPERCENTAGE + " TEXT, "
-                + AI_KEY_GNAME + " TEXT, "  + AI_KEY_GYEAR + " TEXT, " + AI_KEY_GPERCENTAGE + " TEXT, "
-                + AI_KEY_CNAME + " TEXT, "  + AI_KEY_CYEAR + " TEXT, " + AI_KEY_CPERCENTAGE + " TEXT, "
-                + AI_KEY_SNAME + " TEXT, "  + AI_KEY_SYEAR + " TEXT, " + AI_KEY_SPERCENTAGE + " TEXT "
-                + ")";
+                + AI_KEY_PGUNIVERSITY + " TEXT, " + AI_KEY_PGNAME + " TEXT, "  + AI_KEY_PGYEAR + " TEXT, " + AI_KEY_PGPERSUING + " TEXT, " + AI_KEY_PGPERCENTAGE + " TEXT, "
+                + AI_KEY_GUNIVERSITY + " TEXT, " + AI_KEY_GNAME + " TEXT, "  + AI_KEY_GYEAR + " TEXT, " + AI_KEY_GPERSUING + " TEXT, " + AI_KEY_GPERCENTAGE + " TEXT, "
+                + AI_KEY_CBOARD + " TEXT, " + AI_KEY_CNAME + " TEXT, "  + AI_KEY_CYEAR + " TEXT, " + AI_KEY_CPERCENTAGE + " TEXT, "
+                + AI_KEY_SBOARD + " TEXT, " + AI_KEY_SNAME + " TEXT, "  + AI_KEY_SYEAR + " TEXT, " + AI_KEY_SPERCENTAGE + " TEXT, "
+                + AI_KEY_PGNYET + " TEXT " + ")";
         String CREATE_WORK_EX_TABLE = "CREATE TABLE " + TABLE_WORK_EXPERIENCE + "("
-                + EX_KEY_ID + " INTEGER PRIMARY KEY, " + EX_CID + " INTEGER, "+ EX_JOBTITLE + " TEXT, " + EX_JOBDESCRIPTION + " TEXT," + EX_COMPANYNAME
-                + " TEXT, " + EX_STARTDATE + " TEXT, " + EX_ENDDATE+ " TEXT " + ")" ;
+                + EX_KEY_ID + " INTEGER PRIMARY KEY, " + EX_CID + " INTEGER, "+ EX_JOBTITLE + " TEXT, "
+                + EX_JOBDESCRIPTION + " TEXT," + EX_COMPANYNAME
+                + " TEXT, " + EX_STARTDATE + " TEXT, " + EX_ENDDATE+ " TEXT, " + EX_STILLWORKING+ " TEXT " + ")" ;
+
+        String CREATE_DECLARATION_TABLE = "CREATE TABLE " + TABLE_DECLARATION + "("
+                + DC_KEY_ID + " INTEGER PRIMARY KEY, " + DC_KEY_CID + " INTEGER,"
+                + DC_KEY_DECLARATION + " TEXT, " + DC_KEY_DATE + " TEXT, " + DC_KEY_PLACE + " TEXT " + ")";
+
 
         db.execSQL(CREATE_PROFILE_TABLE);
         db.execSQL(CREATE_PINFO_TABLE);
         db.execSQL(CREATE_CO_TABLE);
         db.execSQL(CREATE_AI_TABLE);
         db.execSQL(CREATE_WORK_EX_TABLE);
+        db.execSQL(CREATE_DECLARATION_TABLE);
 
     }
 
@@ -158,6 +185,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACADEMIC_INFO);
 
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DECLARATION);
+
         onCreate(db);
     }
 
@@ -168,6 +197,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Date date = new Date();
         return dateFormat.format(date);
     }
+
+    public void updateDate(int cid)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String updatedDate=getDateTime();
+        // Inserting Row
+       db.execSQL("insert into profiles (cudate) values('"+updatedDate+"') WHERE " + KEY_CID + " = " + cid);
+    }
+
 
     /**
      * All CRUD(Create, Read, Update, Delete) Operations
@@ -378,9 +417,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //db.close(); // Closing database connection
         return n;
     }
+
     //Adding Work Experience
     public long addWorkExperience(WorkExperience we){
         SQLiteDatabase db = this.getWritableDatabase();
+
+        String stw= we.getExStlworking();
+
         ContentValues values = new ContentValues();
         values.put(EX_CID, we.getexCid());
         values.put(EX_JOBTITLE, we.getexJobtitle());
@@ -388,6 +431,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(EX_COMPANYNAME, we.getexCompanyname());
         values.put(EX_STARTDATE, we.getexStartdate());
         values.put(EX_ENDDATE, we.getexEnddate());
+        values.put(EX_STILLWORKING, we.getExStlworking());
         long n = db.insert(TABLE_WORK_EXPERIENCE, null, values);
         return n;
 
@@ -402,33 +446,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(EX_COMPANYNAME, we.getexCompanyname());
         values.put(EX_STARTDATE, we.getexStartdate());
         values.put(EX_ENDDATE, we.getexEnddate());
+        values.put(EX_STILLWORKING, we.getExStlworking());
 
 
         // Updating Row
-        long n = db.update(TABLE_WORK_EXPERIENCE, values, "cid=" + we.getexCid(), null);
+        long n = db.update(TABLE_WORK_EXPERIENCE, values, "exJobtitle= '" + we.getexJobtitle() + "';", null);
         //db.close(); // Closing database connection
         return n;
     }
     // Getting All Experience details
-    public List<WorkExperience> getAllExperienceDetails() {
+    public List<WorkExperience> getAllExperienceDetails(int id) {
         List<WorkExperience> workExperienceList = new ArrayList<WorkExperience>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         //for reverse order
         //Cursor cursor = db.rawQuery("select * from " + TABLE_PROFILE_NAMES + " order by cid desc", null);
 
-        Cursor cursor = db.rawQuery("select * from " + TABLE_WORK_EXPERIENCE, null);
+        Cursor cursor = db.rawQuery("select * from " + TABLE_WORK_EXPERIENCE + " where cid= " + id, null);
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 WorkExperience workExperience = new WorkExperience();
-                workExperience.setexCid(Integer.parseInt(cursor.getString(0)));
-                workExperience.setexJobtitle(cursor.getString(1));
-                workExperience.setexJobdescription(cursor.getString(2));
-                workExperience.setexCompanyname(cursor.getString(3));
-                workExperience.setexStartdate(cursor.getString(4));
-                workExperience.setexEnddate(cursor.getString(5));
+                workExperience.setexCid(Integer.parseInt(cursor.getString(cursor.getColumnIndex(EX_CID))));
+                workExperience.setexJobtitle(cursor.getString(cursor.getColumnIndex(EX_JOBTITLE)));
+                workExperience.setexJobdescription(cursor.getString(cursor.getColumnIndex(EX_JOBDESCRIPTION)));
+                workExperience.setexCompanyname(cursor.getString(cursor.getColumnIndex(EX_COMPANYNAME)));
+                workExperience.setexStartdate(cursor.getString(cursor.getColumnIndex(EX_STARTDATE)));
+                workExperience.setexEnddate(cursor.getString(cursor.getColumnIndex(EX_ENDDATE)));
+                workExperience.setExStlworking(cursor.getString(cursor.getColumnIndex(EX_STILLWORKING)));
                 // Adding profiles to list
                 workExperienceList.add(workExperience);
             } while (cursor.moveToNext());
@@ -438,13 +484,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return workExperienceList;
     }
 
+
+
     // delete a WorkExperience from list
-    boolean deleteWorkExperience(int id) {
+    public boolean deleteWorkExperience(String title) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         //Cursor cursor = db.rawQuery(" delete from " + TABLE_PROFILE_NAMES + " where " + KEY_CID + " = " + id, null);
 
-        boolean n = db.delete(TABLE_WORK_EXPERIENCE, KEY_CID + " = " + id, null) > 0;
+        boolean n = db.delete(TABLE_WORK_EXPERIENCE, EX_JOBTITLE + "= '" + title + "';", null) > 0;
+
         db.close();
         return n;
     }
@@ -465,6 +514,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return n;
     }
 
+    //getting single record
     public CareerObjective getSingleCO(int cid) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -498,18 +548,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ContentValues aiContentValues(AcademicInfo ai){
         ContentValues values = new ContentValues();
         values.put(AI_KEY_CID, ai.getCid());
+
+        values.put(AI_KEY_PGUNIVERSITY, ai.getPguniversity());
         values.put(AI_KEY_PGNAME, ai.getPgname());
         values.put(AI_KEY_PGYEAR, ai.getPgyear());
+        values.put(AI_KEY_PGPERSUING, ai.getPgpersuing());
         values.put(AI_KEY_PGPERCENTAGE, ai.getPgpercentage());
+
+        values.put(AI_KEY_GUNIVERSITY, ai.getGuniversity());
         values.put(AI_KEY_GNAME, ai.getGname());
         values.put(AI_KEY_GYEAR, ai.getGyear());
+        values.put(AI_KEY_GPERSUING, ai.getGpersuing());
         values.put(AI_KEY_GPERCENTAGE, ai.getGpercentage());
+
+        values.put(AI_KEY_CBOARD, ai.getCboard());
         values.put(AI_KEY_CNAME, ai.getCname());
         values.put(AI_KEY_CYEAR, ai.getCyear());
         values.put(AI_KEY_CPERCENTAGE, ai.getCpercentage());
+
+        values.put(AI_KEY_SBOARD, ai.getSboard());
         values.put(AI_KEY_SNAME, ai.getSname());
         values.put(AI_KEY_SYEAR, ai.getSyear());
         values.put(AI_KEY_SPERCENTAGE, ai.getSpercentage());
+
+        values.put(AI_KEY_PGNYET,ai.getPgnotyet());
         return values;
     }
 
@@ -518,7 +580,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = aiContentValues(ai);
         // Inserting Row
-        long n = db.update(TABLE_PERSONAL_INFO, cv, "cid=" + ai.getCid(), null);
+        long n = db.update(TABLE_ACADEMIC_INFO, cv, "cid=" + ai.getCid(), null);
 
         //db.close(); // Closing database connection
         return n;
@@ -536,21 +598,85 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (c != null && c.moveToFirst()) {
 
             academicInfo.setCid(c.getInt(c.getColumnIndex(AI_KEY_CID)));
+            academicInfo.setPgnotyet(c.getString(c.getColumnIndex(AI_KEY_PGNYET)));
+            academicInfo.setPguniversity(c.getString(c.getColumnIndex(AI_KEY_PGUNIVERSITY)));
             academicInfo.setPgname(c.getString(c.getColumnIndex(AI_KEY_PGNAME)));
             academicInfo.setPgyear(c.getString(c.getColumnIndex(AI_KEY_PGYEAR)));
+            academicInfo.setPgpersuing(c.getString(c.getColumnIndex(AI_KEY_PGPERSUING)));
             academicInfo.setPgpercentage(c.getString(c.getColumnIndex(AI_KEY_PGPERCENTAGE)));
+            academicInfo.setGuniversity(c.getString(c.getColumnIndex(AI_KEY_GUNIVERSITY)));
             academicInfo.setGname(c.getString(c.getColumnIndex(AI_KEY_GNAME)));
             academicInfo.setGyear(c.getString(c.getColumnIndex(AI_KEY_GYEAR)));
+            academicInfo.setGpersuing(c.getString(c.getColumnIndex(AI_KEY_GPERSUING)));
             academicInfo.setGpercentage(c.getString(c.getColumnIndex(AI_KEY_GPERCENTAGE)));
+            academicInfo.setCboard(c.getString(c.getColumnIndex(AI_KEY_CBOARD)));
             academicInfo.setCname(c.getString(c.getColumnIndex(AI_KEY_CNAME)));
             academicInfo.setCyear(c.getString(c.getColumnIndex(AI_KEY_CYEAR)));
             academicInfo.setCpercentage(c.getString(c.getColumnIndex(AI_KEY_CPERCENTAGE)));
+            academicInfo.setSboard(c.getString(c.getColumnIndex(AI_KEY_SBOARD)));
             academicInfo.setSname(c.getString(c.getColumnIndex(AI_KEY_SNAME)));
             academicInfo.setSyear(c.getString(c.getColumnIndex(AI_KEY_SYEAR)));
             academicInfo.setSpercentage(c.getString(c.getColumnIndex(AI_KEY_SPERCENTAGE)));
 
             c.close();
             return academicInfo;
+        }
+        return null;
+    }
+
+
+    // Adding declaration
+    public long addDeclaration(Declaration dc) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        ContentValues values = new ContentValues();
+        values.put(DC_KEY_CID, dc.getdCid());
+        values.put(DC_KEY_DECLARATION, dc.getdDeclaration());
+        values.put(DC_KEY_DATE,dc.getdDate());
+        values.put(DC_KEY_PLACE,dc.getdPlace());
+
+
+        // Inserting Row
+        long n = db.insert(TABLE_DECLARATION, null, values);
+        //db.close(); // Closing database connection
+        return n;
+    }
+
+
+    //Update Declaration
+    public long updateDC(Declaration dc) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DC_KEY_CID, dc.getdCid());
+        values.put(DC_KEY_DECLARATION, dc.getdDeclaration());
+        values.put(DC_KEY_DATE, dc.getdDate());
+        values.put(DC_KEY_PLACE, dc.getdPlace());
+
+        // Inserting Row
+        long n = db.update(TABLE_DECLARATION, values, "cid=" + dc.getdCid(), null);
+        //db.close(); // Closing database connection
+        return n;
+    }
+
+    //getting single record
+    public Declaration getSingleDC(int cid) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_DECLARATION + " WHERE "
+                + DC_KEY_CID + " = " + cid;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+        Declaration declaration = new Declaration();
+        if (c != null && c.moveToFirst()) {
+
+            declaration.setdDeclaration(c.getString(c.getColumnIndex(DC_KEY_DECLARATION)));
+            declaration.setdDate(c.getString(c.getColumnIndex(DC_KEY_DATE)));
+            declaration.setdPlace(c.getString(c.getColumnIndex(DC_KEY_PLACE)));
+
+            c.close();
+            return declaration;
         }
         return null;
     }

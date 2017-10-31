@@ -119,25 +119,7 @@ public class CareerObjectiveFragment extends Fragment {
                     }
                 }
             });
-            updateCO.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    CareerObjective careerObjective = new CareerObjective();
-                    careerObjective.setCid(NavigationActivity.cid);
-                    careerObjective.setCo(editText.getText().toString());
-
-                    long n = dbHandler.updateCO(careerObjective);
-                    //Toast.makeText(AddProfilesActivity.this, "count"+n, Toast.LENGTH_SHORT).show();
-                    if (n > 0) {
-                        Toast.makeText(context, "CO updated", Toast.LENGTH_SHORT).show();
-
-                    } else {
-                        Toast.makeText(context, "Problem in adding", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-            });
         }
 
         return rootView;
