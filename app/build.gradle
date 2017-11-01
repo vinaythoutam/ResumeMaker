@@ -37,4 +37,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.reginald:editspinner:1.0.0'
+
 }

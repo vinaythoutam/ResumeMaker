@@ -61,25 +61,27 @@ public class DeclarationFragment extends Fragment {
             }
         };
 
-        dDate.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                new DatePickerDialog(getContext(), date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
+//        dDate.setOnClickListener(new View.OnClickListener() {
 //
-//        dDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 //            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
 //                new DatePickerDialog(getContext(), date, myCalendar
 //                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
 //                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
 //            }
 //        });
+//
+        dDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus==true) {
+                    new DatePickerDialog(getContext(), date, myCalendar
+                            .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                            myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                }
+            }
+        });
 
 //        dDate.setOnTouchListener(new View.OnTouchListener() {
 //            @Override

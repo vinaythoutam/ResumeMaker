@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
-
 
 import com.example.vinay.resumebuilder.model.AcademicInfo;
 import com.example.vinay.resumebuilder.model.CardDetails;
@@ -21,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static java.security.AccessController.getContext;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -204,7 +201,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String updatedDate=getDateTime();
         // Inserting Row
-       db.execSQL("insert into profiles (cudate) values('"+updatedDate+"') WHERE " + KEY_CID + " = " + cid);
+       db.execSQL("update profiles set cudate='" +updatedDate+ "' WHERE " + KEY_CID + " = " + cid);
     }
 
 

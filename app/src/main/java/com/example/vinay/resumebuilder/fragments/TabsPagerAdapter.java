@@ -29,7 +29,7 @@ public class TabsPagerAdapter extends FragmentStatePagerAdapter {
                 ExperienceFragment tab4 = new ExperienceFragment();
                 return tab4;
             case 4:
-                AcheivementsFragment tab5 = new AcheivementsFragment();
+                ProjectsFragment tab5 = new ProjectsFragment();
                 return tab5;
             case 5:
                 StrengthsHobbiesFragment tab6 = new StrengthsHobbiesFragment();

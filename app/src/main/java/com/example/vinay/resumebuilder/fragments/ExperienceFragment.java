@@ -161,7 +161,7 @@ public  class ExperienceFragment extends Fragment {
                                         long n = dbhandler.updateExperience(we);
                                         if(n>0){
                                             Toast.makeText(getContext(), "updated", Toast.LENGTH_SHORT).show();
-                                            //dbhandler.updateDate(NavigationActivity.cid);
+                                            dbhandler.updateDate(NavigationActivity.cid);
                                             getFragmentManager().beginTransaction().detach(ExperienceFragment.this).attach(ExperienceFragment.this).commit();
 
                                         }
@@ -297,10 +297,6 @@ public  class ExperienceFragment extends Fragment {
 
     }
 
-    public void showMenu (View view)
-    {
-
-    }
 }
 
 

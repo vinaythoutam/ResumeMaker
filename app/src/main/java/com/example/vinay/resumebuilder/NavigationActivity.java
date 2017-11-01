@@ -83,7 +83,7 @@ public class NavigationActivity extends AppCompatActivity
         tabLayout.addTab(tabLayout.newTab().setText("CareerObjective"));
         tabLayout.addTab(tabLayout.newTab().setText("AcademicInfo"));
         tabLayout.addTab(tabLayout.newTab().setText("Exprerience"));
-        tabLayout.addTab(tabLayout.newTab().setText("Acheivements"));
+        tabLayout.addTab(tabLayout.newTab().setText("Projects"));
         tabLayout.addTab(tabLayout.newTab().setText("Stregnths&Hobbies"));
         tabLayout.addTab(tabLayout.newTab().setText("Skills"));
         tabLayout.addTab(tabLayout.newTab().setText("Declaration"));

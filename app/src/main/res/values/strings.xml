@@ -73,6 +73,45 @@
         <item>Custom</item>
     </string-array>
 
+    <string-array name="domainSpinner">
+        <item>Accounting/Finance</item>
+        <item>Advertising/PR/MR/Events</item>
+        <item>Agriculture/Dairy</item>
+        <item>Animation</item>
+        <item>Architecture/Interior Designing</item>
+        <item>Aviation/Aerospace Firms</item>
+        <item>Banking/Financial SemceS/Broking</item>
+        <item>BPO/ITES</item>
+        <item>Broadcasting</item>
+        <item>Chemicals/PetroChemica/Piastic/Rubber</item>
+        <item>Construction/Engineering/Cementhetals</item>
+        <item>Consumer Durables</item>
+        <item>Courier/Transporlatioan/Freight</item>
+        <item>Defence/Government</item>
+        <item>Education/Teaching/Training</item>
+        <item>Electricals/Switchgears</item>
+        <item>Export/Import</item>
+        <item>Facility Management</item>
+        <item>Fertilizers/Pesticides</item>
+        <item>FMCG/Foods/Beverage</item>
+        <item>Food Processing</item>
+        <item>Fresher/Trainee</item>
+        <item>Hotels/Restaurants/AirIines/Travel</item>
+        <item>Industrial Products/Heavy Machinery</item>
+        <item>Insurance</item>
+        <item>Internet/Ecommerce</item>
+        <item>IT-Hardware/Networking</item>
+        <item>IT-Sottwere/Software Services</item>
+        <item>Medical/Healthcare/Hospltal</item>
+        <item>Office Equipment/Automation</item>
+        <item>Pharma/Biotech/Clinical Research</item>
+        <item>Publishing</item>
+        <item>Real Estate/Property</item>
+        <item>Recruitment</item>
+        <item>other</item>
+
+
+    </string-array>
     <string name="title_activity_tab">TabActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_nav_profile">NavActivityProfile</string>
